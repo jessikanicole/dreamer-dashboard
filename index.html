@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dreamer — Dashboard de Campañas y ROI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',system-ui,sans-serif;background:#f5f4f2;color:#1a1a1a;min-height:100vh;}
+.wrap{max-width:1060px;margin:0 auto;padding:24px 16px;}
+
+.topbar{background:#fe5a33;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-radius:14px 14px 0 0;}
+.topbar-brand{display:flex;align-items:center;gap:10px;}
+.topbar-logo{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;}
+.topbar-name{color:#fff;font-size:15px;font-weight:600;letter-spacing:-0.01em;}
+.topbar-sub{color:rgba(255,255,255,0.7);font-size:11px;margin-top:1px;}
+.topbar-date{color:rgba(255,255,255,0.75);font-size:12px;}
+
+.tab-bar{display:flex;background:#1c1c1c;padding:0 16px;overflow-x:auto;}
+.tab-bar::-webkit-scrollbar{height:0;}
+.tab{padding:11px 14px;font-size:12.5px;cursor:pointer;background:transparent;border:none;color:rgba(255,255,255,0.45);font-weight:400;font-family:'Inter',sans-serif;border-bottom:2.5px solid transparent;margin-bottom:-1px;display:flex;align-items:center;gap:6px;white-space:nowrap;transition:color 0.15s;}
+.tab:hover{color:rgba(255,255,255,0.8);}
+.tab.active{color:#fe5a33;font-weight:500;border-bottom-color:#fe5a33;}
+
+.content{background:#fff;border-radius:0 0 14px 14px;padding:20px 20px 28px;border:1px solid #e8e6e3;border-top:none;}
+.section{display:none;}
+.section.active{display:block;}
+
+.section-label{font-size:10px;font-weight:600;color:#fe5a33;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;margin-top:24px;display:flex;align-items:center;gap:8px;}
+.section-label:first-child{margin-top:0;}
+.section-label::after{content:'';flex:1;height:1px;background:#fe5a33;opacity:0.18;}
+
+/* Date range bar */
+.range-bar{display:flex;align-items:center;gap:10px;background:#fff2ef;border:1px solid rgba(254,90,51,0.2);border-radius:12px;padding:10px 14px;margin-bottom:18px;flex-wrap:wrap;}
+.range-bar-label{font-size:11px;font-weight:600;color:#c43a18;text-transform:uppercase;letter-spacing:0.06em;display:flex;align-items:center;gap:5px;white-space:nowrap;}
+.range-bar input[type="date"]{width:auto;min-width:130px;border-color:rgba(254,90,51,0.3);font-weight:500;color:#c43a18;}
+.range-sep{color:#c43a18;font-size:12px;}
+.range-pill-all{padding:6px 12px;border-radius:8px;font-size:12px;border:1px solid rgba(254,90,51,0.3);background:#fff;color:#c43a18;cursor:pointer;font-weight:500;}
+.range-pill-all.active{background:#fe5a33;color:#fff;border-color:#fe5a33;}
+.range-quick{display:flex;gap:6px;flex-wrap:wrap;}
+.range-quick button{padding:5px 10px;border-radius:7px;font-size:11px;border:1px solid rgba(254,90,51,0.25);background:#fff;color:#c43a18;cursor:pointer;}
+.range-quick button:hover{background:#ffe6df;}
+
+.metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;}
+.mc{background:#fff;border-radius:12px;padding:14px 14px 12px;border:1px solid rgba(254,90,51,0.13);position:relative;overflow:hidden;}
+.mc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:#fe5a33;border-radius:12px 12px 0 0;}
+.mc.blue::before{background:#5686ff;}
+.mc.green::before{background:#2a9d5c;}
+.mc.neutral::before{background:#d6d3cf;}
+.mc.red::before{background:#e03e3e;}
+.mc-icon{font-size:16px;color:#fe5a33;margin-bottom:6px;}
+.mc.blue .mc-icon{color:#5686ff;}
+.mc.green .mc-icon{color:#2a9d5c;}
+.mc.red .mc-icon{color:#e03e3e;}
+.mc-label{font-size:11px;color:#6b6762;margin-bottom:4px;}
+.mc-value{font-size:19px;font-weight:500;color:#1a1a1a;line-height:1.1;}
+.mc-sub{font-size:11px;color:#9b9794;margin-top:4px;}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
+@media(max-width:600px){.two-col{grid-template-columns:1fr;}}
+
+.card{background:#fff;border:1px solid #ede9e5;border-radius:12px;padding:14px;}
+.card-title{font-size:12px;font-weight:500;color:#6b6762;margin-bottom:12px;display:flex;align-items:center;gap:5px;}
+
+.bar-row{margin-bottom:10px;}
+.bar-meta{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;}
+.bar-code{font-weight:500;color:#1a1a1a;}
+.bar-val{color:#6b6762;}
+.bar-track{height:8px;border-radius:4px;background:#fff2ef;overflow:hidden;}
+.bar-fill{height:100%;border-radius:4px;background:#fe5a33;transition:width 0.4s;}
+.bar-fill.blue{background:#5686ff;}
+
+.fr{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:flex-end;}
+.fr>div{flex:1;min-width:110px;}
+label{font-size:10px;color:#6b6762;display:block;margin-bottom:3px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;}
+input,select{width:100%;padding:8px 10px;border-radius:8px;border:1px solid #ddd9d5;background:#fff;color:#1a1a1a;font-size:13px;font-family:'Inter',sans-serif;outline:none;}
+input:focus,select:focus{border-color:#fe5a33;box-shadow:0 0 0 3px rgba(254,90,51,0.1);}
+
+.btn{padding:8px 16px;border-radius:8px;border:1px solid #ddd9d5;background:#fff;color:#1a1a1a;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;display:inline-flex;align-items:center;gap:6px;transition:background 0.12s;}
+.btn:hover{background:#f5f4f2;}
+.btn-primary{background:#fe5a33;color:#fff;border-color:#fe5a33;font-weight:500;}
+.btn-primary:hover{background:#d94522;}
+.btn-secondary{background:#eef2ff;color:#2d5ce0;border-color:rgba(86,134,255,0.3);}
+.btn-secondary:hover{background:#dde6ff;}
+.btn-danger{color:#e03e3e;border-color:rgba(224,62,62,0.25);}
+.btn-danger:hover{background:#fdeaea;}
+
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{text-align:left;font-size:10px;font-weight:600;color:#6b6762;padding:7px 10px;border-bottom:1px solid #ede9e5;text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap;}
+td{padding:9px 10px;border-bottom:1px solid #f0ece8;color:#1a1a1a;white-space:nowrap;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#fff8f6;}
+
+.badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:500;}
+.badge-orange{background:#fff2ef;color:#c43a18;}
+.badge-blue{background:#eef2ff;color:#2d5ce0;}
+.badge-gray{background:#f0ece8;color:#6b6762;}
+
+.pill-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.pill{padding:5px 12px;border-radius:20px;font-size:12px;border:1px solid rgba(254,90,51,0.3);cursor:pointer;background:#fff;color:#c43a18;font-family:'Inter',sans-serif;transition:background 0.12s;}
+.pill.active{background:#fe5a33;color:#fff;border-color:#fe5a33;font-weight:500;}
+
+.roi-hero{text-align:center;padding:16px;background:#fff2ef;border-radius:10px;border:1px solid rgba(254,90,51,0.18);}
+.roi-num{font-size:36px;font-weight:600;line-height:1;}
+.roi-lbl{font-size:10px;color:#c43a18;margin-top:4px;text-transform:uppercase;letter-spacing:0.08em;font-weight:600;}
+
+.divider{border:none;border-top:1px solid #f0ece8;margin:14px 0;}
+.empty{text-align:center;padding:28px;color:#9b9794;font-size:13px;}
+
+.form-card{background:#fff;border:1px solid #ede9e5;border-radius:12px;padding:18px;margin-bottom:14px;}
+.form-card-hdr{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:#1a1a1a;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #f0ece8;}
+.form-card-hdr i{color:#fe5a33;font-size:16px;}
+.ig{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+@media(max-width:480px){.ig{grid-template-columns:1fr;}}
+.ig1{margin-bottom:10px;}
+
+.legend{display:flex;gap:12px;margin-bottom:10px;font-size:11px;color:#6b6762;}
+.legend span{display:flex;align-items:center;gap:4px;}
+.dot{width:10px;height:10px;border-radius:2px;display:inline-block;}
+
+.export-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.data-count{font-size:12px;color:#9b9794;margin-top:4px;}
+.chart-wrap{position:relative;height:185px;}
+
+.camp-card{background:#fff;border:1px solid #ede9e5;border-radius:12px;padding:16px;margin-bottom:10px;}
+.camp-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px;}
+.camp-name{font-size:14px;font-weight:600;color:#1a1a1a;margin-bottom:3px;}
+.camp-meta{font-size:11px;color:#9b9794;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.camp-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+@media(max-width:600px){.camp-stats{grid-template-columns:repeat(2,1fr);}}
+.camp-stat-label{font-size:10px;color:#9b9794;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:2px;}
+.camp-stat-val{font-size:15px;font-weight:600;}
+.camp-actions{display:flex;gap:6px;}
+.icon-btn{width:28px;height:28px;border-radius:6px;border:1px solid #ddd9d5;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#6b6762;font-size:13px;}
+.icon-btn:hover{background:#f5f4f2;}
+.icon-btn.danger:hover{background:#fdeaea;color:#e03e3e;border-color:rgba(224,62,62,0.25);}
+.icon-btn.primary{background:#fff2ef;color:#c43a18;border-color:rgba(254,90,51,0.3);}
+.icon-btn.primary:hover{background:#ffe6df;}
+
+.status-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;}
+.status-active{background:#e6f7ee;color:#1a6b3a;}
+.status-paused{background:#fff8e1;color:#9a6b00;}
+.status-ended{background:#f0ece8;color:#6b6762;}
+.range-chip{display:inline-flex;align-items:center;padding:1px 7px;border-radius:6px;background:#eef2ff;color:#2d5ce0;font-size:10px;font-weight:600;margin-left:6px;}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(20,18,16,0.5);display:none;align-items:center;justify-content:center;z-index:100;padding:16px;}
+.modal-overlay.open{display:flex;}
+.modal{background:#fff;border-radius:14px;padding:20px;max-width:460px;width:100%;max-height:85vh;overflow-y:auto;}
+.modal-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.modal-title{font-size:15px;font-weight:600;}
+.modal-close{width:28px;height:28px;border-radius:7px;border:none;background:#f5f4f2;cursor:pointer;color:#6b6762;display:flex;align-items:center;justify-content:center;}
+.modal-close:hover{background:#ede9e5;}
+.mtable{width:100%;font-size:12px;margin-top:8px;border-collapse:collapse;}
+.mtable th{text-align:left;padding:6px 4px;font-size:10px;color:#9b9794;text-transform:uppercase;border-bottom:1px solid #f0ece8;}
+.mtable td{padding:4px;border-bottom:1px solid #f7f5f3;}
+.mtable input{padding:5px 7px;font-size:12px;}
+.mtable .mroi{font-weight:600;font-size:12px;}
+
+/* Performance grid (semáforo) */
+.perf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;}
+.perf-card{border-radius:12px;padding:16px;border:1.5px solid;position:relative;overflow:hidden;}
+.perf-card.semred{background:#fdeaea;border-color:#f3a8a8;}
+.perf-card.semyellow{background:#fff8e1;border-color:#f0d27a;}
+.perf-card.semgreen{background:#e6f7ee;border-color:#9fdcb9;}
+.perf-card.semgray{background:#f5f4f2;border-color:#e0dcd8;}
+.perf-dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:6px;}
+.perf-dot.semred{background:#e03e3e;}
+.perf-dot.semyellow{background:#caa000;}
+.perf-dot.semgreen{background:#2a9d5c;}
+.perf-dot.semgray{background:#9b9794;}
+.perf-code{font-size:15px;font-weight:700;margin-bottom:2px;}
+.perf-name{font-size:11px;color:#6b6762;margin-bottom:10px;}
+.perf-roi{font-size:26px;font-weight:700;margin-bottom:8px;}
+.perf-row{display:flex;justify-content:space-between;font-size:11.5px;padding:3px 0;color:#52504d;}
+.perf-row b{color:#1a1a1a;}
+.perf-divider{border-top:1px solid rgba(0,0,0,0.08);margin:8px 0;}
+
+/* Department P&L */
+.dept-flow{display:flex;flex-direction:column;gap:0;}
+.dept-row{display:flex;justify-content:space-between;align-items:center;padding:11px 4px;border-bottom:1px solid #f0ece8;font-size:13px;}
+.dept-row:last-child{border-bottom:none;}
+.dept-row.total{font-weight:700;font-size:14.5px;padding-top:14px;border-top:2px solid #1a1a1a;margin-top:6px;}
+.dept-row .lbl{display:flex;align-items:center;gap:8px;color:#3a3835;}
+.dept-row .lbl i{color:#9b9794;font-size:15px;}
+.dept-row.neg .val{color:#e03e3e;}
+.dept-row.pos .val{color:#2a9d5c;}
+.breakeven-banner{border-radius:12px;padding:18px;text-align:center;margin-bottom:16px;}
+.breakeven-banner.green{background:#e6f7ee;border:1.5px solid #9fdcb9;}
+.breakeven-banner.red{background:#fdeaea;border:1.5px solid #f3a8a8;}
+.breakeven-title{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;}
+.breakeven-title.green{color:#1a6b3a;}
+.breakeven-title.red{color:#a32d2d;}
+.breakeven-num{font-size:30px;font-weight:700;line-height:1.1;}
+.breakeven-num.green{color:#2a9d5c;}
+.breakeven-num.red{color:#e03e3e;}
+.breakeven-sub{font-size:12px;color:#6b6762;margin-top:6px;}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="topbar">
+    <div class="topbar-brand">
+      <div class="topbar-logo"><i class="ti ti-brand-dribbble"></i></div>
+      <div>
+        <div class="topbar-name">Dreamer</div>
+        <div class="topbar-sub">Campañas, ROI &amp; Departamento</div>
+      </div>
+    </div>
+    <div class="topbar-date" id="topbar-date"></div>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab active" onclick="switchTab('overview',this)"><i class="ti ti-layout-dashboard"></i> Overview</button>
+    <button class="tab" onclick="switchTab('campañas',this)"><i class="ti ti-rocket"></i> Campañas</button>
+    <button class="tab" onclick="switchTab('codigos',this)"><i class="ti ti-tag"></i> Códigos</button>
+    <button class="tab" onclick="switchTab('performance',this)"><i class="ti ti-traffic-cone"></i> Performance</button>
+    <button class="tab" onclick="switchTab('nueva',this)"><i class="ti ti-plus"></i> Nueva campaña</button>
+    <button class="tab" onclick="switchTab('departamento',this)"><i class="ti ti-building"></i> Departamento</button>
+    <button class="tab" onclick="switchTab('historico',this)"><i class="ti ti-chart-histogram"></i> Histórico</button>
+  </div>
+
+  <div class="content">
+
+    <!-- OVERVIEW -->
+    <div id="tab-overview" class="section active">
+      <div class="range-bar">
+        <span class="range-bar-label"><i class="ti ti-calendar"></i> Rango</span>
+        <input type="date" id="range-start-1" onchange="onRangeChange(1)">
+        <span class="range-sep">→</span>
+        <input type="date" id="range-end-1" onchange="onRangeChange(1)">
+        <button class="range-pill-all" id="btn-all-1" onclick="setAllTime(1)">Ver todo (acumulado)</button>
+        <div class="range-quick">
+          <button onclick="quickRange(1,'thisMonth')">Este mes</button>
+          <button onclick="quickRange(1,'last3')">Últimos 3 meses</button>
+          <button onclick="quickRange(1,'thisYear')">Este año</button>
+        </div>
+      </div>
+
+      <div class="fr">
+        <div><label>Propiedad</label>
+          <select id="ov-prop" onchange="renderOverview()">
+            <option value="all">Todas</option>
+            <option>Bogotá</option><option>Cocora</option><option>Palomino</option>
+          </select>
+        </div>
+        <div><label>Estado</label>
+          <select id="ov-status" onchange="renderOverview()">
+            <option value="all">Todos</option>
+            <option value="activa">Activa</option>
+            <option value="pausada">Pausada</option>
+            <option value="finalizada">Finalizada</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="metric-grid" id="ov-metrics"></div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title"><i class="ti ti-chart-bar" style="color:#fe5a33;font-size:13px"></i> Revenue vs gasto por mes</div>
+          <div class="legend">
+            <span><span class="dot" style="background:#fe5a33"></span>Revenue</span>
+            <span><span class="dot" style="background:#5686ff"></span>Gasto</span>
+          </div>
+          <div class="chart-wrap"><canvas id="chart-ov"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-trophy" style="color:#fe5a33;font-size:13px"></i> Mejores ROI</div>
+          <div id="ov-top-roi"></div>
+        </div>
+      </div>
+      <div class="two-col" style="margin-top:0">
+        <div class="card">
+          <div class="card-title"><i class="ti ti-building-store" style="color:#5686ff;font-size:13px"></i> Revenue por propiedad</div>
+          <div id="ov-by-prop"></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-alert-triangle" style="color:#e03e3e;font-size:13px"></i> Campañas con ROI negativo</div>
+          <div id="ov-negative"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAMPAÑAS -->
+    <div id="tab-campañas" class="section">
+      <div class="range-bar">
+        <span class="range-bar-label"><i class="ti ti-calendar"></i> Rango</span>
+        <input type="date" id="range-start-2" onchange="onRangeChange(2)">
+        <span class="range-sep">→</span>
+        <input type="date" id="range-end-2" onchange="onRangeChange(2)">
+        <button class="range-pill-all" id="btn-all-2" onclick="setAllTime(2)">Ver todo (acumulado)</button>
+      </div>
+      <div class="fr">
+        <div><label>Buscar</label><input type="text" id="camp-search" placeholder="Nombre o código..." oninput="renderCampaigns()"></div>
+        <div><label>Propiedad</label>
+          <select id="camp-prop" onchange="renderCampaigns()">
+            <option value="all">Todas</option>
+            <option>Bogotá</option><option>Cocora</option><option>Palomino</option>
+          </select>
+        </div>
+        <div><label>Estado</label>
+          <select id="camp-status" onchange="renderCampaigns()">
+            <option value="all">Todos</option>
+            <option value="activa">Activa</option>
+            <option value="pausada">Pausada</option>
+            <option value="finalizada">Finalizada</option>
+          </select>
+        </div>
+        <div><label>Ordenar por</label>
+          <select id="camp-sort" onchange="renderCampaigns()">
+            <option value="recent">Más reciente</option>
+            <option value="roi">Mejor ROI</option>
+            <option value="revenue">Mayor revenue</option>
+            <option value="gasto">Mayor gasto</option>
+          </select>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#9b9794;margin-bottom:10px;display:flex;align-items:center;gap:5px;"><i class="ti ti-info-circle"></i> Cada código es una sola campaña. Usa el ícono de calendario para ingresar o editar sus datos mes a mes — no se duplica.</div>
+      <div id="camp-list"></div>
+    </div>
+
+    <!-- CODIGOS -->
+    <div id="tab-codigos" class="section">
+      <div class="range-bar">
+        <span class="range-bar-label"><i class="ti ti-calendar"></i> Rango</span>
+        <input type="date" id="range-start-3" onchange="onRangeChange(3)">
+        <span class="range-sep">→</span>
+        <input type="date" id="range-end-3" onchange="onRangeChange(3)">
+        <button class="range-pill-all" id="btn-all-3" onclick="setAllTime(3)">Ver todo (acumulado)</button>
+      </div>
+      <div class="section-label">Filtrar por código de descuento</div>
+      <div class="pill-row" id="code-pills"></div>
+      <div id="code-detail"></div>
+    </div>
+
+    <!-- PERFORMANCE -->
+    <div id="tab-performance" class="section">
+      <div class="range-bar">
+        <span class="range-bar-label"><i class="ti ti-calendar"></i> Rango</span>
+        <input type="date" id="range-start-4" onchange="onRangeChange(4)">
+        <span class="range-sep">→</span>
+        <input type="date" id="range-end-4" onchange="onRangeChange(4)">
+        <button class="range-pill-all" id="btn-all-4" onclick="setAllTime(4)">Ver todo (acumulado)</button>
+      </div>
+      <div class="section-label">Semáforo de performance por código</div>
+      <div style="font-size:12px;color:#6b6762;margin-bottom:14px;display:flex;gap:14px;flex-wrap:wrap;">
+        <span><span class="perf-dot semred"></span>Rojo: aún en pérdida (no llega al punto de equilibrio)</span>
+        <span><span class="perf-dot semyellow"></span>Amarillo: ROI entre 0% y 20%</span>
+        <span><span class="perf-dot semgreen"></span>Verde: ROI mayor a 20%</span>
+      </div>
+      <div class="perf-grid" id="perf-grid"></div>
+    </div>
+
+    <!-- NUEVA CAMPAÑA -->
+    <div id="tab-nueva" class="section">
+      <div class="section-label">Crear campaña</div>
+      <div class="form-card">
+        <div class="form-card-hdr"><i class="ti ti-rocket"></i> Datos de la campaña</div>
+        <div class="ig">
+          <div><label>Nombre de campaña</label><input type="text" id="in-nombre" placeholder="Ej. Verano Palomino 2026"></div>
+          <div><label>Código de descuento</label><input type="text" id="in-code" placeholder="Ej. HELLO26"></div>
+        </div>
+        <div class="ig">
+          <div><label>Propiedad</label><select id="in-prop"><option>Bogotá</option><option>Cocora</option><option>Palomino</option><option>General / multi-propiedad</option></select></div>
+          <div><label>Canal principal</label><select id="in-canal"><option>Meta Ads</option><option>Google Ads</option><option>Influencer</option><option>Orgánico</option><option>Email</option><option>Mixto</option></select></div>
+        </div>
+        <div class="ig">
+          <div><label>Mes de inicio</label><input type="month" id="in-mes-inicio"></div>
+          <div><label>Estado</label><select id="in-status"><option value="activa">Activa</option><option value="pausada">Pausada</option><option value="finalizada">Finalizada</option></select></div>
+        </div>
+        <div class="ig1"><label>Notas (opcional)</label><input type="text" id="in-notes" placeholder="Detalles, objetivo, audiencia..."></div>
+        <button class="btn btn-primary" onclick="createCampaign()"><i class="ti ti-plus"></i> Crear campaña</button>
+      </div>
+
+      <div class="section-label">Importar y exportar</div>
+      <div class="export-row">
+        <button class="btn btn-secondary" onclick="exportData()"><i class="ti ti-download"></i> Exportar JSON</button>
+        <button class="btn btn-secondary" onclick="importClick()"><i class="ti ti-upload"></i> Importar JSON</button>
+        <input type="file" id="import-file" style="display:none" accept=".json" onchange="importData(event)">
+        <button class="btn btn-danger" onclick="clearAll()"><i class="ti ti-trash"></i> Borrar todo</button>
+      </div>
+      <div id="data-counts" class="data-count"></div>
+    </div>
+
+    <!-- DEPARTAMENTO -->
+    <div id="tab-departamento" class="section">
+      <div class="range-bar">
+        <span class="range-bar-label"><i class="ti ti-calendar"></i> Rango</span>
+        <input type="date" id="range-start-5" onchange="onRangeChange(5)">
+        <span class="range-sep">→</span>
+        <input type="date" id="range-end-5" onchange="onRangeChange(5)">
+        <button class="range-pill-all" id="btn-select-month-5" onclick="toggleMonthPicker5()">Seleccionar mes</button>
+        <input type="month" id="month-picker-5" onchange="selectMonth5()" style="display:none;width:auto;">
+        <button class="range-pill-all" id="btn-all-5" onclick="setAllTime(5)">Ver todo (acumulado)</button>
+      </div>
+
+      <div class="section-label" style="margin-top:0;" id="dept-breakeven-label">Punto de equilibrio</div>
+      <div id="dept-breakeven"></div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title"><i class="ti ti-list-details" style="color:#fe5a33;font-size:13px"></i> Flujo: revenue → ganancia neta del departamento</div>
+          <div class="dept-flow" id="dept-flow"></div>
+        </div>
+        <div class="card">
+          <div class="form-card-hdr" style="margin-bottom:10px;padding-bottom:8px;"><i class="ti ti-calendar-plus"></i> Ingresar costos del mes</div>
+          <div class="ig1"><label>Mes a registrar</label><input type="month" id="dept-month-input"></div>
+          <div style="margin-bottom:10px;">
+            <button class="btn btn-secondary" onclick="copyPrevMonth()" type="button"><i class="ti ti-copy"></i> Copiar costos del mes anterior</button>
+          </div>
+          <div class="ig">
+            <div><label>Sueldo directora de marketing</label><input type="number" id="dept-sueldo-dir" placeholder="0"></div>
+            <div><label>Pago encargado(a) de revenue</label><input type="number" id="dept-sueldo-rev" placeholder="0"></div>
+          </div>
+          <div class="ig">
+            <div><label>Pago a la agencia de pauta</label><input type="number" id="dept-agencia" placeholder="0"></div>
+            <div><label>Herramientas del departamento</label><input type="number" id="dept-herramientas" placeholder="0"></div>
+          </div>
+          <div style="font-size:11px;color:#9b9794;margin:8px 0 10px;display:flex;align-items:center;gap:5px;"><i class="ti ti-info-circle"></i> El gasto en pauta (Meta + Google) se trae automático desde las campañas de ese mes — no lo ingreses aquí, pero lo verás reflejado abajo en el desglose.</div>
+          <button class="btn btn-primary" onclick="saveDeptMonth()"><i class="ti ti-check"></i> Guardar mes</button>
+        </div>
+      </div>
+
+      <div class="section-label">Costos registrados por mes</div>
+      <div class="card table-wrap">
+        <table>
+          <thead><tr><th>Mes</th><th>Directora</th><th>Revenue</th><th>Agencia</th><th>Herramientas</th><th>Total costos fijos</th><th></th></tr></thead>
+          <tbody id="dept-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- HISTORICO -->
+    <div id="tab-historico" class="section">
+      <div class="fr" style="margin-bottom:18px;">
+        <div style="max-width:160px;"><label>Año</label>
+          <select id="hist-year" onchange="renderHistorico()"></select>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><i class="ti ti-chart-histogram" style="color:#fe5a33;font-size:13px"></i> Comportamiento mensual del departamento</div>
+        <div class="legend">
+          <span><span class="dot" style="background:#fe5a33"></span>ROI</span>
+          <span><span class="dot" style="background:#5686ff"></span>Gasto</span>
+          <span><span class="dot" style="background:#1a1a1a;border-radius:50%;width:7px;height:7px;"></span>Tendencia (ganancia neta)</span>
+        </div>
+        <div style="position:relative;height:340px;"><canvas id="chart-historico"></canvas></div>
+        <div id="hist-empty" class="empty" style="display:none;">Sin meses con datos completos para este año.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL: monthly data entry for campaigns -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-hdr">
+      <div class="modal-title" id="modal-title">Datos mensuales</div>
+      <button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button>
+    </div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const SK='dreamer_campaigns_v3';
+let db={campaigns:[],dept:{}}; // dept: { 'YYYY-MM': {dir,rev,agencia,herramientas} }
+let ovChart=null;
+let ranges={
+  1:{start:null,end:null,all:true},
+  2:{start:null,end:null,all:true},
+  3:{start:null,end:null,all:true},
+  4:{start:null,end:null,all:true},
+  5:{start:null,end:null,all:true}
+}; // independent date range per tab — Overview, Campañas, Códigos, Performance, Departamento
+
+function load(){
+  try{const s=localStorage.getItem(SK);if(s)db=JSON.parse(s);}catch(e){}
+  if(!db.dept)db.dept={};
+  db.campaigns.forEach(c=>{
+    if(!c.months)c.months={};
+    if(c.gasto!==undefined&&Object.keys(c.months).length===0&&(c.gasto>0||c.revenue>0)){
+      const m=(c.fechaInicio||new Date().toISOString()).slice(0,7);
+      c.months[m]={gasto:c.gasto||0,revenue:c.revenue||0};
+    }
+    delete c.gasto;delete c.revenue;
+    // dedup safety: if somehow two campaigns share exact same code+nombre, leave as is (user-managed identity is id)
+  });
+}
+function save(){try{localStorage.setItem(SK,JSON.stringify(db));}catch(e){}}
+
+document.getElementById('topbar-date').textContent=new Date().toLocaleDateString('es-CO',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+const MESES=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+function monthLabel(m){if(!m)return'—';const[y,mo]=m.split('-');return MESES[parseInt(mo)-1]+' '+y;}
+function fmt(n){if(!n&&n!==0)return'—';const neg=n<0;const abs=Math.round(Math.abs(n)).toLocaleString('es-CO');return(neg?'-':'')+'$'+abs;}
+function fmtPct(n){if(n===null||!isFinite(n))return'—';if(n>100)return'100%+';if(n<-100)return'-100%+';return(n>=0?'+':'')+Math.round(n)+'%';}
+
+// ---------- Range handling (independent per tab) ----------
+const rangeIds=[1,2,3,4,5];
+function syncRangeInputs(){
+  rangeIds.forEach(i=>{
+    const s=document.getElementById('range-start-'+i);
+    const e=document.getElementById('range-end-'+i);
+    const b=document.getElementById('btn-all-'+i);
+    const r=ranges[i];
+    if(!s)return;
+    s.value=r.start||'';
+    e.value=r.end||'';
+    if(b)b.classList.toggle('active',r.all);
+    s.style.opacity=r.all?'0.4':'1';
+    e.style.opacity=r.all?'0.4':'1';
+  });
+  const selMonthBtn=document.getElementById('btn-select-month-5');
+  if(selMonthBtn)selMonthBtn.classList.toggle('active',!ranges[5].all);
+}
+function onRangeChange(idx){
+  const s=document.getElementById('range-start-'+idx).value;
+  const e=document.getElementById('range-end-'+idx).value;
+  ranges[idx].start=s||null;
+  ranges[idx].end=e||null;
+  ranges[idx].all=!s&&!e;
+  syncRangeInputs();
+  renderAll();
+}
+function setAllTime(idx){
+  ranges[idx]={start:null,end:null,all:true};
+  syncRangeInputs();
+  renderAll();
+}
+function toggleMonthPicker5(){
+  const picker=document.getElementById('month-picker-5');
+  const isShowingPicker=picker.style.display!=='none';
+  if(isShowingPicker){
+    picker.style.display='none';
+  } else if(!ranges[5].all){
+    // currently showing a selected month -> clicking again resets to current month
+    ranges[5]={start:null,end:null,all:true};
+    syncRangeInputs();
+    renderAll();
+  } else {
+    picker.style.display='inline-block';
+    picker.focus();
+  }
+}
+function selectMonth5(){
+  const m=document.getElementById('month-picker-5').value;
+  if(!m)return;
+  const start=new Date(m+'-01');
+  const end=new Date(start.getFullYear(),start.getMonth()+1,0);
+  ranges[5].start=start.toISOString().slice(0,10);
+  ranges[5].end=end.toISOString().slice(0,10);
+  ranges[5].all=false;
+  document.getElementById('month-picker-5').style.display='none';
+  syncRangeInputs();
+  renderAll();
+}
+function quickRange(idx,kind){
+  const now=new Date();
+  let start,end;
+  if(kind==='thisMonth'){
+    start=new Date(now.getFullYear(),now.getMonth(),1);
+    end=new Date(now.getFullYear(),now.getMonth()+1,0);
+  } else if(kind==='last3'){
+    start=new Date(now.getFullYear(),now.getMonth()-2,1);
+    end=new Date(now.getFullYear(),now.getMonth()+1,0);
+  } else if(kind==='thisYear'){
+    start=new Date(now.getFullYear(),0,1);
+    end=new Date(now.getFullYear(),11,31);
+  }
+  ranges[idx].start=start.toISOString().slice(0,10);
+  ranges[idx].end=end.toISOString().slice(0,10);
+  ranges[idx].all=false;
+  syncRangeInputs();
+  renderAll();
+}
+// returns list of 'YYYY-MM' month keys that fall (even partially) within the given tab's active range
+function monthsInRange(idx){
+  const r=ranges[idx];
+  const all=getAllMonthsUsed();
+  if(r.all||(!r.start&&!r.end))return all;
+  const s=r.start?r.start.slice(0,7):'0000-00';
+  const e=r.end?r.end.slice(0,7):'9999-99';
+  return all.filter(m=>m>=s&&m<=e);
+}
+
+function getAllMonthsUsed(){
+  const set=new Set();
+  db.campaigns.forEach(c=>Object.keys(c.months||{}).forEach(m=>set.add(m)));
+  Object.keys(db.dept||{}).forEach(m=>set.add(m));
+  set.add(new Date().toISOString().slice(0,7));
+  return[...set].sort();
+}
+
+function campTotalsRange(c,idx){
+  const months=monthsInRange(idx);
+  let gasto=0,revenue=0;
+  months.forEach(m=>{
+    const v=(c.months||{})[m];
+    if(v){gasto+=Number(v.gasto)||0;revenue+=Number(v.revenue)||0;}
+  });
+  return{gasto,revenue};
+}
+function roiFromTotals(t){if(!t.gasto||t.gasto<=0)return null;return((t.revenue-t.gasto)/t.gasto)*100;}
+
+function renderAll(){
+  renderOverview();
+  renderCampaigns();
+  renderCodigos();
+  renderPerformance();
+  renderDept();
+}
+
+function switchTab(t,el){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tab-'+t).classList.add('active');
+  if(t==='overview')renderOverview();
+  if(t==='campañas')renderCampaigns();
+  if(t==='codigos')renderCodigos();
+  if(t==='performance')renderPerformance();
+  if(t==='nueva')renderDataCounts();
+  if(t==='departamento')renderDept();
+  if(t==='historico')renderHistorico();
+}
+
+function filteredCampaigns(prop,status){
+  return db.campaigns.filter(c=>{
+    if(prop&&prop!=='all'&&c.prop!==prop)return false;
+    if(status&&status!=='all'&&c.status!==status)return false;
+    return true;
+  });
+}
+
+// ---------- OVERVIEW ----------
+function renderOverview(){
+  const prop=document.getElementById('ov-prop').value;
+  const status=document.getElementById('ov-status').value;
+  const camps=filteredCampaigns(prop,status);
+
+  const withTotals=camps.map(c=>({c,t:campTotalsRange(c,1)}));
+  const tRev=withTotals.reduce((s,x)=>s+x.t.revenue,0);
+  const tGas=withTotals.reduce((s,x)=>s+x.t.gasto,0);
+  const roi=tGas>0?((tRev-tGas)/tGas*100):null;
+  const roiC=roi===null?'#1a1a1a':roi>=0?'#2a9d5c':'#e03e3e';
+  const activas=camps.filter(c=>c.status==='activa').length;
+  const campsWithData=withTotals.filter(x=>x.t.gasto>0||x.t.revenue>0).length;
+
+  // Department-wide breakeven for the same Overview range (only counts months with both campaign data AND dept costs registered)
+  const deptData=computeBreakeven(monthsInRange(1));
+  const netaDept=deptData.gananciaNetaDept; // revenue - pauta - sueldos/agencia/herramientas
+  const netaDeptC=netaDept>=0?'#2a9d5c':'#e03e3e';
+  const deptSpendPct=deptData.totalRevenue>0?(deptData.totalCostosFijos+deptData.pauta)/deptData.totalRevenue*100:null;
+  const deptIncompleteWarning=deptData.missing.length?`<div class="mc-sub" style="color:#caa000;">${deptData.missing.length} mes${deptData.missing.length!==1?'es':''} sin datos completos del depto, excluido${deptData.missing.length!==1?'s':''}</div>`:'';
+
+  document.getElementById('ov-metrics').innerHTML=`
+    <div class="mc"><div class="mc-icon"><i class="ti ti-cash"></i></div><div class="mc-label">Revenue</div><div class="mc-value">${fmt(tRev)}</div><div class="mc-sub">${campsWithData} campañas con datos</div></div>
+    <div class="mc blue"><div class="mc-icon"><i class="ti ti-speakerphone"></i></div><div class="mc-label">Gasto (pauta)</div><div class="mc-value">${fmt(tGas)}</div></div>
+    <div class="mc ${netaDept>=0?'green':''}"><div class="mc-icon" style="color:${netaDeptC}"><i class="ti ti-coins"></i></div><div class="mc-label">Ganancia neta</div><div class="mc-value" style="color:${netaDeptC}">${fmt(netaDept)}</div><div class="mc-sub">Resta pauta + costos del departamento</div></div>
+    <div class="mc"><div class="mc-icon" style="color:${roiC}"><i class="ti ti-percentage"></i></div><div class="mc-label">ROI</div><div class="mc-value" style="color:${roiC};font-size:22px;">${roi!==null?fmtPct(roi):'—'}</div><div class="mc-sub">${roi!==null&&tGas>0?(tRev/tGas).toFixed(1)+'x retorno':''}</div></div>
+    <div class="mc neutral"><div class="mc-icon" style="color:#9b9794"><i class="ti ti-bolt"></i></div><div class="mc-label">Campañas activas</div><div class="mc-value" style="font-size:19px;">${activas}</div></div>
+    <div class="mc red"><div class="mc-icon" style="color:#e03e3e"><i class="ti ti-building"></i></div><div class="mc-label">Gasto departamento</div><div class="mc-value" style="font-size:22px;color:#e03e3e;">${deptSpendPct!==null?Math.round(Math.min(999,Math.abs(deptSpendPct)))+'%':'—'}</div><div class="mc-sub">% del revenue (pauta + sueldos + agencia + herramientas)${deptIncompleteWarning}</div></div>
+  `;
+
+  const allMonths=getAllMonthsUsed();
+  const rByM=allMonths.map(m=>camps.reduce((s,c)=>s+(Number((c.months||{})[m]?.revenue)||0),0));
+  const gByM=allMonths.map(m=>camps.reduce((s,c)=>s+(Number((c.months||{})[m]?.gasto)||0),0));
+  const mL=allMonths.map(m=>monthLabel(m));
+
+  if(ovChart)ovChart.destroy();
+  ovChart=new Chart(document.getElementById('chart-ov').getContext('2d'),{
+    type:'bar',
+    data:{labels:mL.length?mL:['Sin datos'],datasets:[
+      {label:'Revenue',data:rByM.length?rByM:[0],backgroundColor:'#fe5a33',borderRadius:5,borderSkipped:false},
+      {label:'Gasto',data:gByM.length?gByM:[0],backgroundColor:'#5686ff',borderRadius:5,borderSkipped:false}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{
+        y:{ticks:{callback:v=>'$'+(v>=1000000?(v/1000000).toFixed(1)+'M':v>=1000?(v/1000).toFixed(0)+'K':v),font:{size:10},color:'#9b9794'},grid:{color:'#f0ece8'},border:{display:false}},
+        x:{ticks:{font:{size:9},color:'#9b9794'},grid:{display:false},border:{display:false}}
+      }}
+  });
+
+  const withRoi=withTotals.filter(x=>roiFromTotals(x.t)!==null).map(x=>({...x.c,_roi:roiFromTotals(x.t)})).sort((a,b)=>b._roi-a._roi).slice(0,5);
+  document.getElementById('ov-top-roi').innerHTML=withRoi.length?withRoi.map(c=>`
+    <div class="bar-row">
+      <div class="bar-meta"><span class="bar-code">${c.nombre} <span style="color:#9b9794;font-weight:400;">(${c.code||'sin código'})</span></span><span class="bar-val" style="color:${c._roi>=0?'#2a9d5c':'#e03e3e'};font-weight:600;">${fmtPct(c._roi)}</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,Math.max(4,Math.abs(c._roi)))}%; background:${c._roi>=0?'#2a9d5c':'#e03e3e'}"></div></div>
+    </div>`).join(''):'<div class="empty">Sin datos de gasto/revenue para este período</div>';
+
+  const propMap={};withTotals.forEach(x=>{if(x.c.prop)propMap[x.c.prop]=(propMap[x.c.prop]||0)+x.t.revenue;});
+  const propTop=Object.entries(propMap).sort((a,b)=>b[1]-a[1]);const pMx=propTop.length?propTop[0][1]:1;
+  document.getElementById('ov-by-prop').innerHTML=propTop.length&&pMx>0?propTop.map(([p,v])=>`<div class="bar-row"><div class="bar-meta"><span class="bar-code">${p}</span><span class="bar-val">${fmt(v)}</span></div><div class="bar-track"><div class="bar-fill blue" style="width:${Math.round(v/pMx*100)}%"></div></div></div>`).join(''):'<div class="empty">Sin datos</div>';
+
+  const negs=withTotals.filter(x=>{const r=roiFromTotals(x.t);return r!==null&&r<0;}).map(x=>({...x.c,_roi:roiFromTotals(x.t)})).sort((a,b)=>a._roi-b._roi).slice(0,5);
+  document.getElementById('ov-negative').innerHTML=negs.length?negs.map(c=>`
+    <div class="bar-row">
+      <div class="bar-meta"><span class="bar-code">${c.nombre}</span><span class="bar-val" style="color:#e03e3e;font-weight:600;">${fmtPct(c._roi)}</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,Math.abs(c._roi))}%; background:#e03e3e"></div></div>
+    </div>`).join(''):'<div class="empty" style="padding:16px;">Ninguna campaña en negativo 🎉</div>';
+}
+
+// ---------- CAMPAÑAS (one card per campaign, no duplicates) ----------
+function renderCampaigns(){
+  const search=document.getElementById('camp-search').value.toLowerCase().trim();
+  const prop=document.getElementById('camp-prop').value;
+  const status=document.getElementById('camp-status').value;
+  const sort=document.getElementById('camp-sort').value;
+
+  let camps=filteredCampaigns(prop,status);
+  if(search){camps=camps.filter(c=>c.nombre.toLowerCase().includes(search)||(c.code||'').toLowerCase().includes(search));}
+
+  let withTotals=camps.map(c=>({c,t:campTotalsRange(c,2)}));
+
+  if(sort==='recent')withTotals=withTotals.sort((a,b)=>b.c.id-a.c.id);
+  if(sort==='roi')withTotals=withTotals.sort((a,b)=>{const ra=roiFromTotals(a.t),rb=roiFromTotals(b.t);if(ra===null)return 1;if(rb===null)return -1;return rb-ra;});
+  if(sort==='revenue')withTotals=withTotals.sort((a,b)=>b.t.revenue-a.t.revenue);
+  if(sort==='gasto')withTotals=withTotals.sort((a,b)=>b.t.gasto-a.t.gasto);
+
+  const list=document.getElementById('camp-list');
+  if(!withTotals.length){list.innerHTML='<div class="empty" style="background:#f5f4f2;border-radius:12px;">No hay campañas que coincidan. Crea una en la pestaña "Nueva campaña".</div>';return;}
+
+  const periodChip=ranges[2].all?'':`<span class="range-chip">${ranges[2].start||'…'} → ${ranges[2].end||'…'}</span>`;
+
+  list.innerHTML=withTotals.map(({c,t})=>{
+    const roi=roiFromTotals(t);
+    const neta=t.revenue-t.gasto;
+    const roiC=roi===null?'#9b9794':roi>=0?'#2a9d5c':'#e03e3e';
+    const monthsCount=Object.keys(c.months||{}).length;
+    return `
+    <div class="camp-card">
+      <div class="camp-top">
+        <div>
+          <div class="camp-name">${c.nombre} ${periodChip}</div>
+          <div class="camp-meta">
+            <span class="badge badge-orange">${c.code||'Sin código'}</span>
+            <span>${c.prop||'—'}</span>
+            <span>·</span>
+            <span>${c.canal||'—'}</span>
+            <span class="status-pill ${statusClass(c.status)}">${statusLabel(c.status)}</span>
+            <span>${monthsCount} mes${monthsCount!==1?'es':''} con datos</span>
+          </div>
+        </div>
+        <div class="camp-actions">
+          <button class="icon-btn primary" onclick="openMonthlyModal('${c.id}')" title="Ingresar datos mensuales"><i class="ti ti-calendar-plus"></i></button>
+          <button class="icon-btn danger" onclick="deleteCampaign('${c.id}')" title="Eliminar"><i class="ti ti-trash"></i></button>
+        </div>
+      </div>
+      <div class="camp-stats">
+        <div><div class="camp-stat-label">Gasto</div><div class="camp-stat-val">${fmt(t.gasto)}</div></div>
+        <div><div class="camp-stat-label">Revenue</div><div class="camp-stat-val">${fmt(t.revenue)}</div></div>
+        <div><div class="camp-stat-label">Ganancia neta</div><div class="camp-stat-val" style="color:${neta>=0?'#2a9d5c':'#e03e3e'}">${fmt(neta)}</div></div>
+        <div><div class="camp-stat-label">ROI</div><div class="camp-stat-val" style="color:${roiC}">${roi!==null?fmtPct(roi):'Sin gasto'}</div></div>
+      </div>
+      ${c.notes?`<div style="margin-top:10px;font-size:12px;color:#9b9794;">${c.notes}</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+function statusLabel(s){return{activa:'Activa',pausada:'Pausada',finalizada:'Finalizada'}[s]||'Activa';}
+function statusClass(s){return{activa:'status-active',pausada:'status-paused',finalizada:'status-ended'}[s]||'status-active';}
+
+// ---- Monthly entry modal (per campaign, this is what prevents duplication) ----
+function openMonthlyModal(id){
+  const c=db.campaigns.find(x=>x.id==id);if(!c)return;
+  document.getElementById('modal-title').textContent=c.nombre+' ('+(c.code||'sin código')+') — datos por mes';
+  const months=getAllMonthsUsed();
+  let rows=months.map(m=>{
+    const v=c.months[m]||{gasto:'',revenue:''};
+    return {m,gasto:v.gasto,revenue:v.revenue};
+  }).filter(r=>c.months[r.m]); // only show months that already have an entry, plus add-new control below
+  document.getElementById('modal-body').innerHTML=`
+    <div style="display:flex;gap:8px;margin-bottom:12px;">
+      <input type="month" id="new-month-input" style="flex:1;">
+      <button class="btn btn-secondary" onclick="addMonthRow('${id}')"><i class="ti ti-plus"></i> Agregar mes</button>
+    </div>
+    <div class="table-wrap">
+      <table class="mtable">
+        <thead><tr><th>Mes</th><th>Gasto (COP)</th><th>Revenue (COP)</th><th>ROI</th><th></th></tr></thead>
+        <tbody id="modal-rows"></tbody>
+      </table>
+    </div>
+    <div style="margin-top:14px;display:flex;justify-content:flex-end;">
+      <button class="btn btn-primary" onclick="saveMonthlyModal('${id}')"><i class="ti ti-check"></i> Guardar</button>
+    </div>
+  `;
+  renderModalRows(rows);
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function renderModalRows(rows){
+  rows.sort((a,b)=>a.m<b.m?1:-1);
+  document.getElementById('modal-rows').innerHTML=rows.length?rows.map(r=>{
+    const g=Number(r.gasto)||0,rev=Number(r.revenue)||0;
+    const roi=g>0?((rev-g)/g*100):null;
+    const roiC=roi===null?'#9b9794':roi>=0?'#2a9d5c':'#e03e3e';
+    return `<tr data-month="${r.m}">
+      <td style="font-weight:600;">${monthLabel(r.m)}</td>
+      <td><input type="number" class="m-gasto" value="${r.gasto}" placeholder="0" oninput="recalcRow(this)"></td>
+      <td><input type="number" class="m-revenue" value="${r.revenue}" placeholder="0" oninput="recalcRow(this)"></td>
+      <td class="mroi" style="color:${roiC}">${roi!==null?fmtPct(roi):'—'}</td>
+      <td><button class="icon-btn danger" onclick="this.closest('tr').remove()" title="Quitar mes"><i class="ti ti-x"></i></button></td>
+    </tr>`;
+  }).join(''):'<tr><td colspan="5" class="empty">Sin meses agregados aún — usa "Agregar mes" arriba</td></tr>';
+}
+
+function recalcRow(el){
+  const tr=el.closest('tr');
+  const g=Number(tr.querySelector('.m-gasto').value)||0;
+  const rev=Number(tr.querySelector('.m-revenue').value)||0;
+  const roi=g>0?((rev-g)/g*100):null;
+  const roiC=roi===null?'#9b9794':roi>=0?'#2a9d5c':'#e03e3e';
+  const cell=tr.querySelector('.mroi');
+  cell.textContent=roi!==null?fmtPct(roi):'—';
+  cell.style.color=roiC;
+}
+
+function addMonthRow(id){
+  const input=document.getElementById('new-month-input');
+  const m=input.value;
+  if(!m){alert('Selecciona un mes.');return;}
+  if(document.querySelector(`#modal-rows tr[data-month="${m}"]`)){alert('Ese mes ya está en la lista para esta campaña.');return;}
+  const tbody=document.getElementById('modal-rows');
+  if(tbody.querySelector('.empty'))tbody.innerHTML='';
+  const tr=document.createElement('tr');
+  tr.dataset.month=m;
+  tr.innerHTML=`
+    <td style="font-weight:600;">${monthLabel(m)}</td>
+    <td><input type="number" class="m-gasto" value="" placeholder="0" oninput="recalcRow(this)"></td>
+    <td><input type="number" class="m-revenue" value="" placeholder="0" oninput="recalcRow(this)"></td>
+    <td class="mroi" style="color:#9b9794">—</td>
+    <td><button class="icon-btn danger" onclick="this.closest('tr').remove()" title="Quitar mes"><i class="ti ti-x"></i></button></td>`;
+  tbody.prepend(tr);
+  input.value='';
+}
+
+function saveMonthlyModal(id){
+  const c=db.campaigns.find(x=>x.id==id);if(!c)return;
+  const rows=document.querySelectorAll('#modal-rows tr[data-month]');
+  const newMonths={};
+  rows.forEach(tr=>{
+    const m=tr.dataset.month;
+    const g=parseFloat(tr.querySelector('.m-gasto').value)||0;
+    const rev=parseFloat(tr.querySelector('.m-revenue').value)||0;
+    newMonths[m]={gasto:g,revenue:rev};
+  });
+  c.months=newMonths;
+  save();
+  closeModal();
+  renderAll();
+}
+
+function closeModal(){document.getElementById('modal-overlay').classList.remove('open');}
+document.getElementById('modal-overlay').addEventListener('click',e=>{if(e.target.id==='modal-overlay')closeModal();});
+
+function deleteCampaign(id){
+  const c=db.campaigns.find(x=>x.id==id);if(!c)return;
+  if(confirm(`¿Eliminar la campaña "${c.nombre}" y todos sus meses? No se puede deshacer.`)){
+    db.campaigns=db.campaigns.filter(x=>x.id!=id);save();renderAll();renderDataCounts();
+  }
+}
+
+// ---------- CODIGOS (grouped by code — each code shown ONCE, totals across its months) ----------
+function renderCodigos(){
+  const codes=[...new Set(db.campaigns.map(c=>c.code).filter(Boolean))].sort();
+  const pills=document.getElementById('code-pills');
+  if(!codes.length){pills.innerHTML='';document.getElementById('code-detail').innerHTML='<div class="empty" style="padding:28px;background:#f5f4f2;border-radius:10px;">Aún no hay códigos. Crea una campaña con su código en "Nueva campaña".</div>';return;}
+  let active=pills.dataset.active||codes[0];
+  if(!codes.includes(active))active=codes[0];
+  pills.innerHTML=codes.map(c=>`<button class="pill ${c===active?'active':''}" onclick="selectCode('${c}')">${c}</button>`).join('');
+  pills.dataset.active=active;
+  renderCodeDetail(active);
+}
+function selectCode(code){
+  document.getElementById('code-pills').dataset.active=code;
+  document.querySelectorAll('.pill').forEach(p=>p.classList.toggle('active',p.textContent===code));
+  renderCodeDetail(code);
+}
+function renderCodeDetail(code){
+  const camps=db.campaigns.filter(c=>c.code===code); // typically just 1, but supports multiple campaigns sharing a code
+  const withTotals=camps.map(c=>({c,t:campTotalsRange(c,3)}));
+  const tRev=withTotals.reduce((s,x)=>s+x.t.revenue,0);
+  const tGas=withTotals.reduce((s,x)=>s+x.t.gasto,0);
+  const neta=tRev-tGas;
+  const roi=tGas>0?((tRev-tGas)/tGas*100):null;
+  const roiC=roi===null?'#c43a18':roi>=0?'#2a9d5c':'#e03e3e';
+  const periodLbl=ranges[3].all?'acumulado':(ranges[3].start&&ranges[3].end?ranges[3].start+' → '+ranges[3].end:'período');
+
+  // monthly breakdown for this code (across its campaign(s))
+  const allMonths=monthsInRange(3);
+  const byMonth=allMonths.map(m=>{
+    let g=0,r=0;
+    camps.forEach(c=>{const v=(c.months||{})[m];if(v){g+=Number(v.gasto)||0;r+=Number(v.revenue)||0;}});
+    return{m,g,r};
+  }).filter(x=>x.g>0||x.r>0);
+
+  document.getElementById('code-detail').innerHTML=`
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+        <span class="badge badge-orange" style="font-size:14px;padding:5px 14px;">${code}</span>
+        <span style="font-size:12px;color:#9b9794;">${camps.length} campaña${camps.length!==1?'s':''} · ${periodLbl}</span>
+      </div>
+      <div class="metric-grid" style="margin-bottom:16px;">
+        <div class="mc"><div class="mc-label">Revenue</div><div class="mc-value" style="font-size:16px;">${fmt(tRev)}</div></div>
+        <div class="mc blue"><div class="mc-label">Gasto</div><div class="mc-value" style="font-size:16px;">${fmt(tGas)}</div></div>
+        <div class="mc ${neta>=0?'green':''}"><div class="mc-label">Ganancia neta</div><div class="mc-value" style="font-size:16px;color:${neta>=0?'#2a9d5c':'#e03e3e'}">${fmt(neta)}</div></div>
+        <div class="roi-hero"><div class="roi-num" style="color:${roiC}">${roi!==null?fmtPct(roi):'—'}</div><div class="roi-lbl">ROI</div></div>
+      </div>
+      <div class="divider"></div>
+      <div class="card-title">Desglose mes a mes</div>
+      ${byMonth.length?byMonth.map(x=>{
+        const r=x.g>0?((x.r-x.g)/x.g*100):null;
+        const rc=r===null?'#9b9794':r>=0?'#2a9d5c':'#e03e3e';
+        return `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0ece8;font-size:13px;"><span style="font-weight:500;">${monthLabel(x.m)}</span><span style="color:#6b6762;">${fmt(x.r)} rev · ${fmt(x.g)} gasto</span><span style="color:${rc};font-weight:600;">${r!==null?fmtPct(r):'—'}</span></div>`;
+      }).join(''):'<div class="empty">Sin datos en este período</div>'}
+    </div>`;
+}
+
+// ---------- PERFORMANCE (semáforo) ----------
+function renderPerformance(){
+  const codes=[...new Set(db.campaigns.map(c=>c.code).filter(Boolean))].sort();
+  const grid=document.getElementById('perf-grid');
+  if(!codes.length){grid.innerHTML='<div class="empty" style="background:#f5f4f2;border-radius:12px;grid-column:1/-1;">Aún no hay códigos para evaluar.</div>';return;}
+
+  grid.innerHTML=codes.map(code=>{
+    const camps=db.campaigns.filter(c=>c.code===code);
+    const t=camps.reduce((acc,c)=>{const x=campTotalsRange(c,4);acc.gasto+=x.gasto;acc.revenue+=x.revenue;return acc;},{gasto:0,revenue:0});
+    const roi=t.gasto>0?((t.revenue-t.gasto)/t.gasto*100):null;
+    const neta=t.revenue-t.gasto;
+
+    let sem='semgray',semText='Sin gasto registrado';
+    if(roi!==null){
+      if(roi<0){sem='semred';semText='En pérdida';}
+      else if(roi<=20){sem='semyellow';semText='ROI entre 0–20%';}
+      else{sem='semgreen';semText='ROI superior a 20%';}
+    }
+
+    // distances to breakeven, 20%, 30%
+    const breakevenTarget=t.gasto; // revenue needed to reach 0%
+    const target20=t.gasto*1.2;
+    const target30=t.gasto*1.3;
+    const toBreakeven=Math.max(0,breakevenTarget-t.revenue);
+    const to20=Math.max(0,target20-t.revenue);
+    const to30=Math.max(0,target30-t.revenue);
+    const pctToBreakeven=breakevenTarget>0?Math.max(0,100-(t.revenue/breakevenTarget*100)):null;
+    const pctTo20=target20>0?Math.max(0,100-(t.revenue/target20*100)):null;
+    const pctTo30=target30>0?Math.max(0,100-(t.revenue/target30*100)):null;
+
+    return `
+    <div class="perf-card ${sem}">
+      <div style="display:flex;align-items:center;margin-bottom:2px;"><span class="perf-dot ${sem}"></span><span class="perf-code">${code}</span></div>
+      <div class="perf-name">${camps.map(c=>c.nombre).join(', ')} · ${semText}</div>
+      <div class="perf-roi" style="color:${sem==='semred'?'#e03e3e':sem==='semyellow'?'#9a6b00':sem==='semgreen'?'#1a6b3a':'#6b6762'}">${roi!==null?fmtPct(roi):'—'}</div>
+      <div class="perf-row"><span>Gasto</span><b>${fmt(t.gasto)}</b></div>
+      <div class="perf-row"><span>Revenue</span><b>${fmt(t.revenue)}</b></div>
+      <div class="perf-row"><span>Ganancia neta</span><b style="color:${neta>=0?'#1a6b3a':'#a32d2d'}">${fmt(neta)}</b></div>
+      <div class="perf-divider"></div>
+      ${t.gasto<=0?'<div class="perf-row"><span>Ingresa el gasto para ver metas</span></div>':`
+      <div class="perf-row"><span>Para punto de equilibrio</span><b>${toBreakeven<=0?'✓ Alcanzado':fmt(toBreakeven)+(pctToBreakeven!==null?' · '+Math.round(pctToBreakeven)+'%':'')}</b></div>
+      <div class="perf-row"><span>Para llegar a 20% ROI</span><b>${to20<=0?'✓ Alcanzado':fmt(to20)+(pctTo20!==null?' · '+Math.round(pctTo20)+'%':'')}</b></div>
+      <div class="perf-row"><span>Para llegar a 30% ROI</span><b>${to30<=0?'✓ Alcanzado':fmt(to30)+(pctTo30!==null?' · '+Math.round(pctTo30)+'%':'')}</b></div>
+      `}
+    </div>`;
+  }).join('');
+}
+
+// ---------- NUEVA CAMPAÑA ----------
+function createCampaign(){
+  const nombre=document.getElementById('in-nombre').value.trim();
+  const code=document.getElementById('in-code').value.trim().toUpperCase();
+  if(!nombre){alert('Ingresa al menos el nombre de la campaña.');return;}
+  if(code && db.campaigns.some(c=>c.code===code)){
+    if(!confirm(`Ya existe una campaña con el código "${code}" (${db.campaigns.find(c=>c.code===code).nombre}). ¿Seguro quieres crear otra campaña distinta con el mismo código? Si lo que quieres es agregar otro mes a la campaña existente, ve a "Campañas" y usa el ícono de calendario en lugar de crear una nueva.`)) return;
+  }
+  const mesInicio=document.getElementById('in-mes-inicio').value||new Date().toISOString().slice(0,7);
+  db.campaigns.push({
+    id:Date.now(),
+    nombre,code,
+    prop:document.getElementById('in-prop').value,
+    canal:document.getElementById('in-canal').value,
+    fechaInicio:mesInicio,
+    status:document.getElementById('in-status').value,
+    notes:document.getElementById('in-notes').value.trim(),
+    months:{}
+  });
+  save();
+  ['in-nombre','in-code','in-mes-inicio','in-notes'].forEach(id=>document.getElementById(id).value='');
+  renderDataCounts();
+  alert('Campaña creada ✓ Ahora ve a "Campañas" y usa el ícono de calendario para ingresar gasto y revenue mes a mes.');
+}
+
+function renderDataCounts(){
+  const withData=db.campaigns.filter(c=>Object.keys(c.months||{}).length>0).length;
+  const totalMonthEntries=db.campaigns.reduce((s,c)=>s+Object.keys(c.months||{}).length,0);
+  document.getElementById('data-counts').textContent=`${db.campaigns.length} campañas creadas · ${withData} con datos · ${totalMonthEntries} registros mensuales en total`;
+}
+
+// ---------- DEPARTAMENTO ----------
+function pautaForMonth(m){
+  let total=0;
+  db.campaigns.forEach(c=>{
+    const v=(c.months||{})[m];
+    if(v)total+=Number(v.gasto)||0;
+  });
+  return total;
+}
+function revenueForMonth(m){
+  let total=0;
+  db.campaigns.forEach(c=>{
+    const v=(c.months||{})[m];
+    if(v)total+=Number(v.revenue)||0;
+  });
+  return total;
+}
+function hasAnyCampaignDataForMonth(m){
+  return db.campaigns.some(c=>(c.months||{})[m]);
+}
+
+// Computes the full breakeven picture for a single list of months (used both for "today's month" and for the selected range)
+function computeBreakeven(months){
+  const perMonth=months.map(m=>{
+    const dept=db.dept[m]||null;
+    const hasCamp=hasAnyCampaignDataForMonth(m);
+    const hasDept=!!dept;
+    const pauta=pautaForMonth(m);
+    const revenue=revenueForMonth(m);
+    const dir=dept?Number(dept.dir)||0:0;
+    const rev=dept?Number(dept.rev)||0:0;
+    const agencia=dept?Number(dept.agencia)||0:0;
+    const herr=dept?Number(dept.herramientas)||0:0;
+    const costosFijos=dir+rev+agencia+herr;
+    return{m,hasCamp,hasDept,pauta,revenue,dir,rev,agencia,herr,costosFijos,complete:hasCamp&&hasDept};
+  });
+  const complete=perMonth.filter(x=>x.complete);
+  const incomplete=perMonth.filter(x=>x.hasCamp||x.hasDept);
+  const totalRevenue=complete.reduce((s,x)=>s+x.revenue,0);
+  const pauta=complete.reduce((s,x)=>s+x.pauta,0);
+  const dirTotal=complete.reduce((s,x)=>s+x.dir,0);
+  const revTotal=complete.reduce((s,x)=>s+x.rev,0);
+  const agenciaTotal=complete.reduce((s,x)=>s+x.agencia,0);
+  const herrTotal=complete.reduce((s,x)=>s+x.herr,0);
+  const totalCostosFijos=dirTotal+revTotal+agenciaTotal+herrTotal;
+  const gananciaCampañas=totalRevenue-pauta;
+  const gananciaNetaDept=gananciaCampañas-totalCostosFijos;
+  const breakevenTarget=pauta+totalCostosFijos;
+  const reached=totalRevenue>=breakevenTarget&&breakevenTarget>0;
+  const missing=incomplete.filter(x=>!x.complete);
+  return{perMonth,complete,missing,totalRevenue,pauta,dirTotal,revTotal,agenciaTotal,herrTotal,totalCostosFijos,gananciaCampañas,gananciaNetaDept,breakevenTarget,reached};
+}
+
+function renderBreakevenBanner(elId,data,label){
+  const missingHtml=data.missing.length?`<div style="background:#fff8e1;border:1px solid #f0d27a;border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:#7a5a00;display:flex;gap:8px;align-items:flex-start;">
+      <i class="ti ti-alert-triangle" style="margin-top:1px;"></i>
+      <span>${data.missing.map(x=>`<b>${monthLabel(x.m)}</b>: ${x.hasCamp&&!x.hasDept?'tiene campañas registradas pero faltan los costos del departamento':'tiene costos del departamento pero faltan campañas registradas'}`).join(' · ')}. Este mes no se incluye en el cálculo hasta que tenga ambos datos.</span>
+    </div>`:'';
+
+  if(!data.complete.length){
+    document.getElementById(elId).innerHTML=missingHtml+`<div class="breakeven-banner red"><div class="breakeven-title red">Sin datos completos — ${label}</div><div class="breakeven-num red">—</div><div class="breakeven-sub">Necesitas campañas Y costos del departamento registrados para este mes para ver el punto de equilibrio.</div></div>`;
+  } else if(data.reached){
+    const ganancia=data.totalRevenue-data.breakevenTarget;
+    const pct=(ganancia/data.breakevenTarget*100);
+    document.getElementById(elId).innerHTML=missingHtml+`
+      <div class="breakeven-banner green">
+        <div class="breakeven-title green"><i class="ti ti-check"></i> Punto de equilibrio alcanzado — ${label}</div>
+        <div class="breakeven-num green">${fmt(ganancia)}</div>
+        <div class="breakeven-sub">Ganancia por encima del punto de equilibrio · ${fmtPct(pct)} sobre lo necesario para cubrir todos los costos</div>
+      </div>`;
+  } else {
+    const falta=data.breakevenTarget-data.totalRevenue;
+    const pctFalta=(falta/data.breakevenTarget*100);
+    document.getElementById(elId).innerHTML=missingHtml+`
+      <div class="breakeven-banner red">
+        <div class="breakeven-title red"><i class="ti ti-alert-triangle"></i> Aún no se llega al punto de equilibrio — ${label}</div>
+        <div class="breakeven-num red">${fmt(falta)}</div>
+        <div class="breakeven-sub">Falta ${Math.round(pctFalta)}% para cubrir pauta + costos del departamento (${fmt(data.breakevenTarget)} en total)</div>
+      </div>`;
+  }
+}
+
+function renderDept(){
+  // ranges[5].all === true means "show current month" (the default state for this tab).
+  // Once the user picks a month or a manual range, that becomes the active period for this single banner.
+  const todayMonth=new Date().toISOString().slice(0,7);
+  const months=ranges[5].all?[todayMonth]:monthsInRange(5);
+  const data=computeBreakeven(months);
+  const label=ranges[5].all?monthLabel(todayMonth):(data.complete.length===1?monthLabel(data.complete[0].m):(ranges[5].start&&ranges[5].end?ranges[5].start+' → '+ranges[5].end:'período'));
+  renderBreakevenBanner('dept-breakeven',data,label);
+
+  const deptSpendPct=data.totalRevenue>0?(data.totalCostosFijos+data.pauta)/data.totalRevenue*100:null;
+
+  document.getElementById('dept-flow').innerHTML=`
+    <div class="dept-row"><span class="lbl"><i class="ti ti-cash"></i> Revenue total (campañas)</span><span class="val">${fmt(data.totalRevenue)}</span></div>
+    <div class="dept-row neg"><span class="lbl"><i class="ti ti-speakerphone"></i> Gasto en pauta (Meta + Google)</span><span class="val">−${fmt(data.pauta)}</span></div>
+    <div class="dept-row" style="font-weight:600;"><span class="lbl"><i class="ti ti-equal"></i> Ganancia de campañas</span><span class="val" style="color:${data.gananciaCampañas>=0?'#2a9d5c':'#e03e3e'}">${fmt(data.gananciaCampañas)}</span></div>
+    <div class="dept-row neg"><span class="lbl"><i class="ti ti-user-star"></i> Sueldo directora de marketing</span><span class="val">−${fmt(data.dirTotal)}</span></div>
+    <div class="dept-row neg"><span class="lbl"><i class="ti ti-user-dollar"></i> Pago encargado(a) de revenue</span><span class="val">−${fmt(data.revTotal)}</span></div>
+    <div class="dept-row neg"><span class="lbl"><i class="ti ti-briefcase"></i> Pago a la agencia de pauta</span><span class="val">−${fmt(data.agenciaTotal)}</span></div>
+    <div class="dept-row neg"><span class="lbl"><i class="ti ti-tools"></i> Herramientas del departamento</span><span class="val">−${fmt(data.herrTotal)}</span></div>
+    <div class="dept-row total ${data.gananciaNetaDept>=0?'pos':'neg'}"><span class="lbl">Ganancia neta del departamento</span><span class="val">${fmt(data.gananciaNetaDept)}</span></div>
+    <div class="dept-row" style="padding-top:10px;"><span class="lbl"><i class="ti ti-percentage"></i> Gasto total del depto (% del revenue)</span><span class="val" style="color:#e03e3e;font-weight:600;">${deptSpendPct!==null?Math.round(Math.min(999,deptSpendPct))+'%':'—'}</span></div>
+    <div style="font-size:11px;color:#9b9794;margin-top:8px;">Calculado sobre ${data.complete.length} mes${data.complete.length!==1?'es':''} con datos completos (campañas + costos del departamento).</div>
+  `;
+
+  renderDeptTable();
+}
+
+// ---------- HISTORICO ----------
+let histChart=null;
+function getYearsWithData(){
+  const years=new Set();
+  getAllMonthsUsed().forEach(m=>years.add(m.slice(0,4)));
+  years.add(String(new Date().getFullYear()));
+  return[...years].sort();
+}
+function populateHistYear(){
+  const sel=document.getElementById('hist-year');
+  const years=getYearsWithData();
+  const cur=sel.value||String(new Date().getFullYear());
+  sel.innerHTML=years.map(y=>`<option value="${y}">${y}</option>`).join('');
+  sel.value=years.includes(cur)?cur:years[years.length-1];
+}
+
+function renderHistorico(){
+  populateHistYear();
+  const year=document.getElementById('hist-year').value;
+  // Only months belonging to the selected year, in calendar order, that have complete data (campaigns + dept costs)
+  const monthsInYear=Array.from({length:12},(_,i)=>`${year}-${String(i+1).padStart(2,'0')}`);
+  const rows=monthsInYear.map(m=>{
+    const d=computeBreakeven([m]);
+    return{m,...d};
+  }).filter(x=>x.complete.length>0);
+
+  const wrap=document.getElementById('chart-historico').parentElement;
+  const emptyEl=document.getElementById('hist-empty');
+  if(!rows.length){
+    wrap.style.display='none';
+    emptyEl.style.display='block';
+    if(histChart){histChart.destroy();histChart=null;}
+    return;
+  }
+  wrap.style.display='block';
+  emptyEl.style.display='none';
+
+  const labels=rows.map(r=>{const[,mo]=r.m.split('-');return MESES[parseInt(mo)-1];});
+  const gastoData=rows.map(r=>r.pauta+r.totalCostosFijos);
+  const roiPctData=rows.map(r=>{
+    const t=r.pauta+r.totalCostosFijos;
+    return t>0?((r.totalRevenue-t)/t)*100:0;
+  });
+  const netaData=rows.map(r=>r.gananciaNetaDept);
+
+  // To physically stack "gasto" (money) and "ROI" (%) in the same bar, we scale ROI into
+  // an equivalent money-sized chunk on top of the gasto base, then label it with the real % in the tooltip.
+  const maxGasto=Math.max(...gastoData,1);
+  const roiScaled=roiPctData.map(p=>Math.max(0,p)/100*maxGasto*0.6);
+
+  if(histChart)histChart.destroy();
+  histChart=new Chart(document.getElementById('chart-historico').getContext('2d'),{
+    data:{
+      labels,
+      datasets:[
+        {type:'bar',label:'Gasto',data:gastoData,backgroundColor:'#5686ff',stack:'s1',borderRadius:{topLeft:0,topRight:0,bottomLeft:5,bottomRight:5},yAxisID:'y'},
+        {type:'bar',label:'ROI',data:roiScaled,backgroundColor:'#fe5a33',stack:'s1',borderRadius:{topLeft:5,topRight:5,bottomLeft:0,bottomRight:0},yAxisID:'y',_realRoi:roiPctData},
+        {type:'line',label:'Tendencia (ganancia neta)',data:netaData,borderColor:'#1a1a1a',backgroundColor:'#1a1a1a',pointBackgroundColor:'#1a1a1a',pointRadius:4,borderWidth:2,tension:0.3,yAxisID:'y2',fill:false}
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:(ctx)=>{
+          if(ctx.dataset.label==='Gasto')return'Gasto del depto: '+fmt(ctx.raw);
+          if(ctx.dataset.label==='ROI')return'ROI: '+Math.round(ctx.dataset._realRoi[ctx.dataIndex])+'%';
+          if(ctx.dataset.label.includes('Tendencia'))return'Ganancia neta: '+fmt(ctx.raw);
+          return ctx.formattedValue;
+        }}}
+      },
+      scales:{
+        y:{type:'linear',position:'left',title:{display:true,text:'Gasto + ROI (escala combinada)',font:{size:10}},ticks:{callback:v=>'$'+(v>=1000000?(v/1000000).toFixed(1)+'M':v>=1000?(v/1000).toFixed(0)+'K':v),font:{size:9},color:'#9b9794'},grid:{color:'#f0ece8'}},
+        y2:{type:'linear',display:false,position:'right'},
+        x:{ticks:{font:{size:10},color:'#9b9794'},grid:{display:false}}
+      }
+    }
+  });
+}
+
+function copyPrevMonth(){
+  const m=document.getElementById('dept-month-input').value;
+  if(!m){alert('Primero selecciona el mes que vas a registrar.');return;}
+  const months=Object.keys(db.dept).filter(x=>x<m).sort();
+  if(!months.length){alert('No hay un mes anterior registrado para copiar.');return;}
+  const prevMonth=months[months.length-1];
+  const d=db.dept[prevMonth];
+  document.getElementById('dept-sueldo-dir').value=d.dir||0;
+  document.getElementById('dept-sueldo-rev').value=d.rev||0;
+  document.getElementById('dept-agencia').value=d.agencia||0;
+  document.getElementById('dept-herramientas').value=d.herramientas||0;
+  alert(`Copiado de ${monthLabel(prevMonth)}. Revisa los valores y guarda.`);
+}
+
+function saveDeptMonth(){
+  const m=document.getElementById('dept-month-input').value;
+  if(!m){alert('Selecciona el mes a registrar.');return;}
+  db.dept[m]={
+    dir:parseFloat(document.getElementById('dept-sueldo-dir').value)||0,
+    rev:parseFloat(document.getElementById('dept-sueldo-rev').value)||0,
+    agencia:parseFloat(document.getElementById('dept-agencia').value)||0,
+    herramientas:parseFloat(document.getElementById('dept-herramientas').value)||0
+  };
+  save();
+  ['dept-sueldo-dir','dept-sueldo-rev','dept-agencia','dept-herramientas'].forEach(id=>document.getElementById(id).value='');
+  renderDept();
+  alert('Costos del mes guardados ✓');
+}
+
+function renderDeptTable(){
+  const months=Object.keys(db.dept).sort().reverse();
+  const tbody=document.getElementById('dept-tbody');
+  if(!months.length){tbody.innerHTML='<tr><td colspan="7" class="empty">Sin meses registrados aún</td></tr>';return;}
+  tbody.innerHTML=months.map(m=>{
+    const d=db.dept[m];
+    const total=(Number(d.dir)||0)+(Number(d.rev)||0)+(Number(d.agencia)||0)+(Number(d.herramientas)||0);
+    return `<tr data-dept-month="${m}">
+      <td style="font-weight:600;">${monthLabel(m)}</td>
+      <td>${fmt(d.dir)}</td>
+      <td>${fmt(d.rev)}</td>
+      <td>${fmt(d.agencia)}</td>
+      <td>${fmt(d.herramientas)}</td>
+      <td style="font-weight:600;">${fmt(total)}</td>
+      <td style="white-space:nowrap;">
+        <button class="icon-btn" onclick="editDeptRow('${m}')" title="Editar"><i class="ti ti-pencil"></i></button>
+        <button class="icon-btn danger" onclick="deleteDeptMonth('${m}')" title="Eliminar mes"><i class="ti ti-trash"></i></button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function editDeptRow(m){
+  const d=db.dept[m];
+  const tr=document.querySelector(`tr[data-dept-month="${m}"]`);
+  if(!tr)return;
+  tr.innerHTML=`
+    <td style="font-weight:600;">${monthLabel(m)}</td>
+    <td><input type="number" class="dept-edit-dir" value="${d.dir||0}" style="width:100px;" oninput="recalcDeptRow(this)"></td>
+    <td><input type="number" class="dept-edit-rev" value="${d.rev||0}" style="width:100px;" oninput="recalcDeptRow(this)"></td>
+    <td><input type="number" class="dept-edit-agencia" value="${d.agencia||0}" style="width:100px;" oninput="recalcDeptRow(this)"></td>
+    <td><input type="number" class="dept-edit-herramientas" value="${d.herramientas||0}" style="width:100px;" oninput="recalcDeptRow(this)"></td>
+    <td style="font-weight:600;" class="dept-row-total">${fmt((d.dir||0)+(d.rev||0)+(d.agencia||0)+(d.herramientas||0))}</td>
+    <td style="white-space:nowrap;">
+      <button class="icon-btn primary" onclick="saveDeptRow('${m}')" title="Guardar cambios"><i class="ti ti-check"></i></button>
+      <button class="icon-btn danger" onclick="renderDeptTable()" title="Cancelar"><i class="ti ti-x"></i></button>
+    </td>`;
+}
+
+function recalcDeptRow(el){
+  const tr=el.closest('tr');
+  const dir=Number(tr.querySelector('.dept-edit-dir').value)||0;
+  const rev=Number(tr.querySelector('.dept-edit-rev').value)||0;
+  const agencia=Number(tr.querySelector('.dept-edit-agencia').value)||0;
+  const herr=Number(tr.querySelector('.dept-edit-herramientas').value)||0;
+  tr.querySelector('.dept-row-total').textContent=fmt(dir+rev+agencia+herr);
+}
+
+function saveDeptRow(m){
+  const tr=document.querySelector(`tr[data-dept-month="${m}"]`);
+  if(!tr)return;
+  db.dept[m]={
+    dir:parseFloat(tr.querySelector('.dept-edit-dir').value)||0,
+    rev:parseFloat(tr.querySelector('.dept-edit-rev').value)||0,
+    agencia:parseFloat(tr.querySelector('.dept-edit-agencia').value)||0,
+    herramientas:parseFloat(tr.querySelector('.dept-edit-herramientas').value)||0
+  };
+  save();
+  renderDept();
+}
+
+function deleteDeptMonth(m){
+  if(confirm(`¿Eliminar los costos registrados de ${monthLabel(m)}?`)){
+    delete db.dept[m];save();renderDept();
+  }
+}
+
+// ---------- Import / export ----------
+function exportData(){const b=new Blob([JSON.stringify(db,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='dreamer_campañas_'+new Date().toISOString().slice(0,10)+'.json';a.click();}
+function importClick(){document.getElementById('import-file').click();}
+function importData(e){
+  const file=e.target.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    try{
+      const imp=JSON.parse(ev.target.result);
+      if(imp.campaigns){
+        if(confirm(`Importar ${imp.campaigns.length} campañas? Reemplazará los datos actuales.`)){db=imp;if(!db.dept)db.dept={};db.campaigns.forEach(c=>{if(!c.months)c.months={};});save();renderDataCounts();renderAll();alert('Importado ✓');}
+      }else{alert('Archivo inválido');}
+    }catch{alert('Error al leer el archivo');}
+  };
+  r.readAsText(file);
+}
+function clearAll(){if(confirm('¿Borrar TODAS las campañas y datos del departamento? No se puede deshacer.')){db={campaigns:[],dept:{}};save();renderDataCounts();renderAll();alert('Datos eliminados');}}
+
+load();
+syncRangeInputs();
+renderAll();
+renderDataCounts();
+</script>
+</body>
+</html>
