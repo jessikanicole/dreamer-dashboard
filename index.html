@@ -199,6 +199,18 @@ tr:hover td{background:#fff8f6;}
 .breakeven-num.green{color:#2a9d5c;}
 .breakeven-num.red{color:#e03e3e;}
 .breakeven-sub{font-size:12px;color:#6b6762;margin-top:6px;}
+
+/* Edit mode lock */
+.lock-btn{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:6px 12px;border-radius:8px;font-size:12px;cursor:pointer;font-family:'Inter',sans-serif;font-weight:500;}
+.lock-btn:hover{background:rgba(255,255,255,0.28);}
+.lock-btn.unlocked{background:#1a6b3a;border-color:#1a6b3a;}
+.readonly-banner{background:#fff8e1;border-bottom:1px solid #f0d27a;color:#7a5a00;font-size:12px;padding:8px 16px;display:flex;align-items:center;gap:8px;}
+.lock-modal-overlay{position:fixed;inset:0;background:rgba(20,18,16,0.5);display:none;align-items:center;justify-content:center;z-index:200;padding:16px;}
+.lock-modal-overlay.open{display:flex;}
+.lock-modal{background:#fff;border-radius:14px;padding:24px;max-width:340px;width:100%;text-align:center;}
+.lock-modal h3{font-size:15px;margin-bottom:12px;}
+.lock-modal input{margin-bottom:12px;text-align:center;}
+[data-readonly-disable]{opacity:0.45;pointer-events:none;}
 </style>
 </head>
 <body>
@@ -212,7 +224,13 @@ tr:hover td{background:#fff8f6;}
         <div class="topbar-sub">Campañas, ROI &amp; Departamento</div>
       </div>
     </div>
-    <div class="topbar-date" id="topbar-date"></div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="topbar-date" id="topbar-date"></div>
+      <button class="lock-btn" id="lock-toggle-btn" onclick="onLockButtonClick()"><i class="ti ti-lock" id="lock-icon"></i> <span id="lock-label">Solo lectura</span></button>
+    </div>
+  </div>
+  <div class="readonly-banner" id="readonly-banner" style="display:none;">
+    <i class="ti ti-info-circle"></i> Estás viendo el dashboard en modo solo lectura. Pídele a Jessika el acceso de edición si necesitas modificar datos.
   </div>
 
   <div class="tab-bar">
@@ -469,9 +487,40 @@ tr:hover td{background:#fff8f6;}
   </div>
 </div>
 
+<!-- MODAL: edit-mode unlock -->
+<div class="lock-modal-overlay" id="lock-modal-overlay">
+  <div class="lock-modal">
+    <h3><i class="ti ti-lock" style="color:#fe5a33;"></i> Desbloquear edición</h3>
+    <input type="password" id="lock-passphrase-input" placeholder="Clave de edición" onkeydown="if(event.key==='Enter')submitPassphrase()">
+    <div style="display:flex;gap:8px;justify-content:center;">
+      <button class="btn" onclick="closeLockModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="submitPassphrase()">Desbloquear</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-const SK='dreamer_campaigns_v3';
+// ---------- Firebase setup ----------
+const firebaseConfig={
+  apiKey:"AIzaSyBDhBy4MWDQa4Q50_wvhSFk2L1CPav8HRA",
+  authDomain:"dreamer-dashboard.firebaseapp.com",
+  projectId:"dreamer-dashboard",
+  storageBucket:"dreamer-dashboard.firebasestorage.app",
+  messagingSenderId:"571654216667",
+  appId:"1:571654216667:web:aa2d114d9a2d163b2b25fe"
+};
+firebase.initializeApp(firebaseConfig);
+const dbFirestore=firebase.firestore();
+const DOC_REF=dbFirestore.collection('dreamer').doc('dashboard');
+
+const EDIT_PASSPHRASE='Dreamer123!!!';
+let isEditMode=false;
+let firestoreReady=false;
+let pendingSave=false;
+
 let db={campaigns:[],dept:{}}; // dept: { 'YYYY-MM': {dir,rev,agencia,herramientas} }
 let ovChart=null;
 let ranges={
@@ -482,9 +531,9 @@ let ranges={
   5:{start:null,end:null,all:true}
 }; // independent date range per tab — Overview, Campañas, Códigos, Performance, Departamento
 
-function load(){
-  try{const s=localStorage.getItem(SK);if(s)db=JSON.parse(s);}catch(e){}
+function migrateDb(){
   if(!db.dept)db.dept={};
+  if(!db.campaigns)db.campaigns=[];
   db.campaigns.forEach(c=>{
     if(!c.months)c.months={};
     if(c.gasto!==undefined&&Object.keys(c.months).length===0&&(c.gasto>0||c.revenue>0)){
@@ -492,10 +541,89 @@ function load(){
       c.months[m]={gasto:c.gasto||0,revenue:c.revenue||0};
     }
     delete c.gasto;delete c.revenue;
-    // dedup safety: if somehow two campaigns share exact same code+nombre, leave as is (user-managed identity is id)
   });
 }
-function save(){try{localStorage.setItem(SK,JSON.stringify(db));}catch(e){}}
+
+// Real-time listener: any change anyone makes (while in edit mode) is pushed live to everyone viewing.
+function startFirestoreSync(){
+  DOC_REF.onSnapshot(snap=>{
+    if(snap.exists){
+      db=snap.data().db?JSON.parse(snap.data().db):{campaigns:[],dept:{}};
+    } else {
+      db={campaigns:[],dept:{}};
+    }
+    migrateDb();
+    firestoreReady=true;
+    renderAll();
+    renderDataCounts();
+    if(document.getElementById('tab-historico').classList.contains('active'))renderHistorico();
+  },err=>{
+    console.error('Firestore sync error:',err);
+    document.getElementById('readonly-banner').style.display='flex';
+    document.getElementById('readonly-banner').innerHTML='<i class="ti ti-alert-triangle"></i> No se pudo conectar a la base de datos. Verifica tu conexión a internet.';
+  });
+}
+
+function save(){
+  if(!isEditMode){alert('Estás en modo solo lectura. Desbloquea la edición primero.');return;}
+  DOC_REF.set({db:JSON.stringify(db),updatedAt:new Date().toISOString()}).catch(err=>{
+    console.error('Error guardando:',err);
+    alert('No se pudo guardar el cambio. Revisa tu conexión a internet e intenta de nuevo.');
+  });
+}
+
+// ---------- Edit mode lock ----------
+function applyReadonlyUI(){
+  document.querySelectorAll('[data-readonly-disable]').forEach(el=>{});
+  const allInputs=document.querySelectorAll('input, select, button');
+  // Instead of disabling everything individually (too broad), we toggle a body-level class
+  // and gate the actual mutating functions (save, createCampaign, etc.) — see guarded wrappers below.
+  document.body.classList.toggle('readonly-mode',!isEditMode);
+  document.getElementById('readonly-banner').style.display=isEditMode?'none':'flex';
+  const btn=document.getElementById('lock-toggle-btn');
+  const icon=document.getElementById('lock-icon');
+  const label=document.getElementById('lock-label');
+  btn.classList.toggle('unlocked',isEditMode);
+  icon.className=isEditMode?'ti ti-lock-open':'ti ti-lock';
+  label.textContent=isEditMode?'Edición activada':'Solo lectura';
+}
+
+function onLockButtonClick(){
+  if(isEditMode){
+    if(confirm('¿Volver a modo solo lectura?')){
+      isEditMode=false;
+      sessionStorage.removeItem('dreamer_edit_unlocked');
+      applyReadonlyUI();
+    }
+  } else {
+    document.getElementById('lock-modal-overlay').classList.add('open');
+    document.getElementById('lock-passphrase-input').value='';
+    document.getElementById('lock-passphrase-input').focus();
+  }
+}
+function closeLockModal(){document.getElementById('lock-modal-overlay').classList.remove('open');}
+function submitPassphrase(){
+  const v=document.getElementById('lock-passphrase-input').value;
+  if(v===EDIT_PASSPHRASE){
+    isEditMode=true;
+    sessionStorage.setItem('dreamer_edit_unlocked','1');
+    closeLockModal();
+    applyReadonlyUI();
+  } else {
+    alert('Clave incorrecta.');
+  }
+}
+function requireEditMode(){
+  if(!isEditMode){
+    alert('Esta acción requiere modo edición. Desbloquéalo con el candado arriba.');
+    return false;
+  }
+  return true;
+}
+
+document.getElementById('lock-modal-overlay').addEventListener('click',e=>{if(e.target.id==='lock-modal-overlay')closeLockModal();});
+
+
 
 document.getElementById('topbar-date').textContent=new Date().toLocaleDateString('es-CO',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 
@@ -844,6 +972,7 @@ function addMonthRow(id){
 }
 
 function saveMonthlyModal(id){
+  if(!requireEditMode())return;
   const c=db.campaigns.find(x=>x.id==id);if(!c)return;
   const rows=document.querySelectorAll('#modal-rows tr[data-month]');
   const newMonths={};
@@ -863,6 +992,7 @@ function closeModal(){document.getElementById('modal-overlay').classList.remove(
 document.getElementById('modal-overlay').addEventListener('click',e=>{if(e.target.id==='modal-overlay')closeModal();});
 
 function deleteCampaign(id){
+  if(!requireEditMode())return;
   const c=db.campaigns.find(x=>x.id==id);if(!c)return;
   if(confirm(`¿Eliminar la campaña "${c.nombre}" y todos sus meses? No se puede deshacer.`)){
     db.campaigns=db.campaigns.filter(x=>x.id!=id);save();renderAll();renderDataCounts();
@@ -975,6 +1105,7 @@ function renderPerformance(){
 
 // ---------- NUEVA CAMPAÑA ----------
 function createCampaign(){
+  if(!requireEditMode())return;
   const nombre=document.getElementById('in-nombre').value.trim();
   const code=document.getElementById('in-code').value.trim().toUpperCase();
   if(!nombre){alert('Ingresa al menos el nombre de la campaña.');return;}
@@ -1194,6 +1325,7 @@ function renderHistorico(){
 }
 
 function copyPrevMonth(){
+  if(!requireEditMode())return;
   const m=document.getElementById('dept-month-input').value;
   if(!m){alert('Primero selecciona el mes que vas a registrar.');return;}
   const months=Object.keys(db.dept).filter(x=>x<m).sort();
@@ -1208,6 +1340,7 @@ function copyPrevMonth(){
 }
 
 function saveDeptMonth(){
+  if(!requireEditMode())return;
   const m=document.getElementById('dept-month-input').value;
   if(!m){alert('Selecciona el mes a registrar.');return;}
   db.dept[m]={
@@ -1245,6 +1378,7 @@ function renderDeptTable(){
 }
 
 function editDeptRow(m){
+  if(!requireEditMode())return;
   const d=db.dept[m];
   const tr=document.querySelector(`tr[data-dept-month="${m}"]`);
   if(!tr)return;
@@ -1271,6 +1405,7 @@ function recalcDeptRow(el){
 }
 
 function saveDeptRow(m){
+  if(!requireEditMode())return;
   const tr=document.querySelector(`tr[data-dept-month="${m}"]`);
   if(!tr)return;
   db.dept[m]={
@@ -1284,6 +1419,7 @@ function saveDeptRow(m){
 }
 
 function deleteDeptMonth(m){
+  if(!requireEditMode())return;
   if(confirm(`¿Eliminar los costos registrados de ${monthLabel(m)}?`)){
     delete db.dept[m];save();renderDept();
   }
@@ -1293,6 +1429,7 @@ function deleteDeptMonth(m){
 function exportData(){const b=new Blob([JSON.stringify(db,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='dreamer_campañas_'+new Date().toISOString().slice(0,10)+'.json';a.click();}
 function importClick(){document.getElementById('import-file').click();}
 function importData(e){
+  if(!requireEditMode()){e.target.value='';return;}
   const file=e.target.files[0];if(!file)return;
   const r=new FileReader();
   r.onload=ev=>{
@@ -1305,12 +1442,13 @@ function importData(e){
   };
   r.readAsText(file);
 }
-function clearAll(){if(confirm('¿Borrar TODAS las campañas y datos del departamento? No se puede deshacer.')){db={campaigns:[],dept:{}};save();renderDataCounts();renderAll();alert('Datos eliminados');}}
+function clearAll(){if(!requireEditMode())return;if(confirm('¿Borrar TODAS las campañas y datos del departamento? No se puede deshacer.')){db={campaigns:[],dept:{}};save();renderDataCounts();renderAll();alert('Datos eliminados');}}
 
-load();
+// ---------- App init ----------
+isEditMode=sessionStorage.getItem('dreamer_edit_unlocked')==='1';
+applyReadonlyUI();
 syncRangeInputs();
-renderAll();
-renderDataCounts();
+startFirestoreSync();
 </script>
 </body>
 </html>
