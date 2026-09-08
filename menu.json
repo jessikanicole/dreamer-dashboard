@@ -55,7 +55,7 @@
             },
             "price": "$30K",
             "id": "desayunos-0-0",
-            "soldOut": false
+            "soldOut": true
           },
           {
             "name": {
@@ -1296,5 +1296,5 @@
       }
     ]
   },
-  "featuredItemId": null
+  "featuredItemId": "desayunos-0-1"
 }
