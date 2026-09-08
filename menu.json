@@ -54,7 +54,8 @@
               "en": "Eggs your way, guacamole, arepa, costeño cheese, ham and fresh fruit"
             },
             "price": "$30K",
-            "id": "desayunos-0-0"
+            "id": "desayunos-0-0",
+            "soldOut": true
           },
           {
             "name": {
@@ -1293,5 +1294,5 @@
       }
     ]
   },
-  "featuredItemId": null
+  "featuredItemId": "desayunos-0-5"
 }
