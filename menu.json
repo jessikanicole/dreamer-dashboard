@@ -1,0 +1,1297 @@
+{
+  "tabs": [
+    {
+      "id": "desayunos",
+      "es": "Desayunos",
+      "en": "Breakfast"
+    },
+    {
+      "id": "entradas",
+      "es": "Entradas",
+      "en": "Starters"
+    },
+    {
+      "id": "fuertes",
+      "es": "Platos Fuertes",
+      "en": "Main Dishes"
+    },
+    {
+      "id": "pizzas",
+      "es": "Pizzas",
+      "en": "Pizzas"
+    },
+    {
+      "id": "postres",
+      "es": "Postres",
+      "en": "Desserts"
+    },
+    {
+      "id": "bar",
+      "es": "Bar",
+      "en": "Bar"
+    }
+  ],
+  "categories": {
+    "desayunos": [
+      {
+        "id": "desayunos-principal",
+        "title": {
+          "es": "Desayunos",
+          "en": "Breakfast"
+        },
+        "subtitle": {
+          "es": "Incluye jugo del día",
+          "en": "Includes juice of the day"
+        },
+        "items": [
+          {
+            "name": {
+              "es": "Dreamer Breakfast",
+              "en": "Dreamer Breakfast"
+            },
+            "desc": {
+              "es": "Huevos al gusto, guacamole, arepa, queso costeño, jamón y fruta fresca",
+              "en": "Eggs your way, guacamole, arepa, costeño cheese, ham and fresh fruit"
+            },
+            "price": "$30K",
+            "id": "desayunos-0-0"
+          },
+          {
+            "name": {
+              "es": "Tostada Dreamer",
+              "en": "Dreamer Toast"
+            },
+            "desc": {
+              "es": "Pan artesanal, huevos al gusto, tocineta, guacamole, mix de verdes, tomate cherry, cebolla encurtida, queso bocconcini, parmesano, aceitunas y tzatziki de suero costeño",
+              "en": "Artisan bread, eggs your way, bacon, guacamole, mixed greens, cherry tomato, pickled onion, bocconcini, parmesan, olives and costeño-whey tzatziki"
+            },
+            "price": "$32K",
+            "id": "desayunos-0-1"
+          },
+          {
+            "name": {
+              "es": "Tostada de Aguacate",
+              "en": "Avocado Toast"
+            },
+            "desc": {
+              "es": "Pan artesanal con huevos al gusto, aguacate, mix de verdes, tomate cherry, cebolla encurtida, queso bocconcini y reducción de balsámico",
+              "en": "Artisan bread with eggs your way, avocado, mixed greens, cherry tomato, pickled onion, bocconcini and balsamic reduction"
+            },
+            "price": "$30K",
+            "tag": "veg",
+            "id": "desayunos-0-2"
+          },
+          {
+            "name": {
+              "es": "Eggs and Bacon Pancakes",
+              "en": "Eggs and Bacon Pancakes"
+            },
+            "desc": {
+              "es": "Pancakes hechos en casa con huevos al gusto, tocineta y miel",
+              "en": "House-made pancakes with eggs your way, bacon and honey"
+            },
+            "price": "$29K",
+            "id": "desayunos-0-3"
+          },
+          {
+            "name": {
+              "es": "Sweet Pancakes",
+              "en": "Sweet Pancakes"
+            },
+            "desc": {
+              "es": "Pancakes hechos en casa con fresas, banano y miel",
+              "en": "House-made pancakes with strawberries, banana and honey"
+            },
+            "price": "$28K",
+            "id": "desayunos-0-4"
+          },
+          {
+            "name": {
+              "es": "Shakshuka",
+              "en": "Shakshuka"
+            },
+            "desc": {
+              "es": "Huevos cocidos en nuestra salsa de tomates horneados con especias y pimientos, queso costeño, suero costeño, cilantro, acompañado de tostadas de pan artesanal",
+              "en": "Eggs cooked in our roasted-tomato sauce with spices and peppers, costeño cheese, costeño whey, cilantro, served with artisan bread toast"
+            },
+            "price": "$32K",
+            "id": "desayunos-0-5"
+          },
+          {
+            "name": {
+              "es": "Parfait",
+              "en": "Parfait"
+            },
+            "desc": {
+              "es": "Granola, frutas frescas de la región y yogurt",
+              "en": "Granola, fresh local fruit and yogurt"
+            },
+            "price": "$28K",
+            "tag": "veg",
+            "id": "desayunos-0-6"
+          },
+          {
+            "name": {
+              "es": "Bowl de Frutas",
+              "en": "Fruit Bowl"
+            },
+            "desc": {
+              "es": "Fruta fresca de la región",
+              "en": "Fresh local fruit"
+            },
+            "price": "$10K",
+            "tag": "veg",
+            "id": "desayunos-0-7"
+          }
+        ]
+      },
+      {
+        "id": "bebidas",
+        "title": {
+          "es": "Bebidas",
+          "en": "Drinks"
+        },
+        "items": [
+          {
+            "name": {
+              "es": "Mango, Maracuyá, Piña, Lulo, Fresa",
+              "en": "Mango, Passionfruit, Pineapple, Lulo, Strawberry"
+            },
+            "desc": {
+              "es": "En agua o en leche",
+              "en": "Made with water or milk"
+            },
+            "price": "Agua $16K · Leche $18K",
+            "id": "desayunos-1-0"
+          }
+        ]
+      },
+      {
+        "id": "cafe",
+        "title": {
+          "es": "Café",
+          "en": "Coffee"
+        },
+        "items": [
+          {
+            "name": {
+              "es": "Espresso",
+              "en": "Espresso"
+            },
+            "price": "$5K",
+            "id": "desayunos-2-0"
+          },
+          {
+            "name": {
+              "es": "Americano",
+              "en": "Americano"
+            },
+            "price": "$8K",
+            "id": "desayunos-2-1"
+          },
+          {
+            "name": {
+              "es": "Latte",
+              "en": "Latte"
+            },
+            "price": "$10K",
+            "id": "desayunos-2-2"
+          },
+          {
+            "name": {
+              "es": "Iced Coffee",
+              "en": "Iced Coffee"
+            },
+            "price": "$16K",
+            "id": "desayunos-2-3"
+          },
+          {
+            "name": {
+              "es": "Iced Latte",
+              "en": "Iced Latte"
+            },
+            "price": "$16K",
+            "id": "desayunos-2-4"
+          }
+        ]
+      },
+      {
+        "id": "detox",
+        "title": {
+          "es": "Bebidas Detox",
+          "en": "Detox Drinks"
+        },
+        "subtitle": {
+          "es": "$16K cada una",
+          "en": "$16K each"
+        },
+        "highlight": true,
+        "items": [
+          {
+            "name": {
+              "es": "Morado Místico",
+              "en": "Mystic Purple"
+            },
+            "desc": {
+              "es": "Arándanos, uvas negras, semillas de chía, limón y hierbabuena",
+              "en": "Blueberries, black grapes, chia seeds, lemon and mint"
+            },
+            "id": "desayunos-3-0"
+          },
+          {
+            "name": {
+              "es": "Raíz Vital",
+              "en": "Vital Root"
+            },
+            "desc": {
+              "es": "Espinaca, manzana verde, pepino, jengibre, limón y naranja",
+              "en": "Spinach, green apple, cucumber, ginger, lemon and orange"
+            },
+            "id": "desayunos-3-1"
+          },
+          {
+            "name": {
+              "es": "Fit & Fresh",
+              "en": "Fit & Fresh"
+            },
+            "desc": {
+              "es": "Naranja, zanahoria, jengibre, cúrcuma y limón",
+              "en": "Orange, carrot, ginger, turmeric and lemon"
+            },
+            "id": "desayunos-3-2"
+          },
+          {
+            "name": {
+              "es": "Green Vibes",
+              "en": "Green Vibes"
+            },
+            "desc": {
+              "es": "Apio, pepino, piña, manzana verde, perejil y limón",
+              "en": "Celery, cucumber, pineapple, green apple, parsley and lemon"
+            },
+            "id": "desayunos-3-3"
+          },
+          {
+            "name": {
+              "es": "Frutopia",
+              "en": "Frutopia"
+            },
+            "desc": {
+              "es": "Remolacha, fresa, piña, menta y limón",
+              "en": "Beet, strawberry, pineapple, mint and lemon"
+            },
+            "id": "desayunos-3-4"
+          }
+        ]
+      }
+    ],
+    "entradas": [
+      {
+        "id": "entradas-principal",
+        "title": {
+          "es": "Entradas",
+          "en": "Starters"
+        },
+        "items": [
+          {
+            "name": {
+              "es": "Alitas BBQ x6",
+              "en": "BBQ Wings x6"
+            },
+            "price": "$26K",
+            "id": "entradas-0-0"
+          },
+          {
+            "name": {
+              "es": "Alitas BBQ x12",
+              "en": "BBQ Wings x12"
+            },
+            "price": "$46K",
+            "id": "entradas-0-1"
+          },
+          {
+            "name": {
+              "es": "Fish and Chips",
+              "en": "Fish and Chips"
+            },
+            "desc": {
+              "es": "Dedos de pescado empanizados, papas a la francesa y salsa artesanal de la casa",
+              "en": "Breaded fish fingers, french fries and house-made sauce"
+            },
+            "price": "$30K",
+            "id": "entradas-0-2"
+          },
+          {
+            "name": {
+              "es": "Chicken Tenders",
+              "en": "Chicken Tenders"
+            },
+            "desc": {
+              "es": "Filetes de pollo en panko, miel mostaza y papas a la francesa",
+              "en": "Panko-crusted chicken fillets, honey mustard and french fries"
+            },
+            "price": "$30K",
+            "id": "entradas-0-3"
+          },
+          {
+            "name": {
+              "es": "Patacones",
+              "en": "Patacones"
+            },
+            "desc": {
+              "es": "5 patacones, queso y la plancha, suero costeño y salsa criolla",
+              "en": "5 plantain patties, griddled cheese, costeño whey and creole sauce"
+            },
+            "price": "$22K",
+            "tag": "veg",
+            "id": "entradas-0-4"
+          },
+          {
+            "name": {
+              "es": "Tacos",
+              "en": "Tacos"
+            },
+            "desc": {
+              "es": "3 tortillas con proteína a elegir, guacamole, sour cream, pico de gallo y salsa chipotle",
+              "en": "3 tortillas with your choice of protein, guacamole, sour cream, pico de gallo and chipotle sauce"
+            },
+            "price": "Pescado $38K · Camarón $38K · Pollo Crunchy $36K",
+            "id": "entradas-0-5"
+          },
+          {
+            "name": {
+              "es": "Picada de la Casa",
+              "en": "House Sharing Platter"
+            },
+            "desc": {
+              "es": "Chorizo artesanal, lomo de res, pechuga de pollo, salteadas con pimentón y cebolla, patacón, papas rústicas y suero de la casa",
+              "en": "Artisan chorizo, beef tenderloin, chicken breast sautéed with peppers and onion, plantain, rustic potatoes and house whey"
+            },
+            "price": "$75K",
+            "note": {
+              "es": "Para 2–3 personas",
+              "en": "Serves 2–3"
+            },
+            "id": "entradas-0-6"
+          }
+        ]
+      },
+      {
+        "id": "bowls",
+        "title": {
+          "es": "Bowls",
+          "en": "Bowls"
+        },
+        "items": [
+          {
+            "name": {
+              "es": "Bowl de Salmón",
+              "en": "Salmon Bowl"
+            },
+            "desc": {
+              "es": "Salmón 200gr a la plancha, aguacate, mango, pepino, salsa de ostras y mayo Sriracha",
+              "en": "200g grilled salmon, avocado, mango, cucumber, oyster sauce and Sriracha mayo"
+            },
+            "price": "$42K",
+            "id": "entradas-1-0"
+          },
+          {
+            "name": {
+              "es": "Bowl de Pollo Teriyaki",
+              "en": "Teriyaki Chicken Bowl"
+            },
+            "desc": {
+              "es": "Arroz, pollo, cebollín, cuadros de pollo, salsa teriyaki, aguacate, cebolla, vegetales y mayonesa de Sriracha",
+              "en": "Rice, chicken, scallion, diced chicken, teriyaki sauce, avocado, onion, vegetables and Sriracha mayo"
+            },
+            "price": "$38K",
+            "id": "entradas-1-1"
+          }
+        ]
+      },
+      {
+        "id": "ensaladas",
+        "title": {
+          "es": "Ensaladas",
+          "en": "Salads"
+        },
+        "items": [
+          {
+            "name": {
+              "es": "Ensalada Dreamer",
+              "en": "Dreamer Salad"
+            },
+            "desc": {
+              "es": "Pechuga asada, mix de lechugas, aguacate, tomate cherry, tomate seco, pepino, queso mozzarella, crotones, maíz y vinagreta de la casa",
+              "en": "Grilled chicken breast, mixed lettuce, avocado, cherry tomato, sun-dried tomato, cucumber, mozzarella, croutons, corn and house vinaigrette"
+            },
+            "price": "Camarón $40K · Pollo $38K",
+            "id": "entradas-2-0"
+          }
+        ]
+      }
+    ],
+    "fuertes": [
+      {
+        "id": "pescados",
+        "title": {
+          "es": "Dreamer's Choice — Pescados y Mariscos",
+          "en": "Dreamer's Choice — Fish and Seafood"
+        },
+        "items": [
+          {
+            "name": {
+              "es": "Mojarra Frita",
+              "en": "Fried Mojarra"
+            },
+            "desc": {
+              "es": "Mojarra roja 400gr, patacones, arroz con coco y ensalada con aguacate",
+              "en": "400g red tilapia, plantain, coconut rice and salad with avocado"
+            },
+            "price": "$48K",
+            "id": "fuertes-0-0"
+          },
+          {
+            "name": {
+              "es": "Mojarra en Salsa de Coco",
+              "en": "Mojarra in Coconut Sauce"
+            },
+            "desc": {
+              "es": "Mojarra roja 400gr en zumo de coco, patacones, arroz con coco y ensalada con aguacate",
+              "en": "400g red tilapia in coconut broth, plantain, coconut rice and salad with avocado"
+            },
+            "price": "$52K",
+            "id": "fuertes-0-1"
+          },
+          {
+            "name": {
+              "es": "Filete de Robalo en Salsa de Camarones",
+              "en": "Sea Bass Fillet in Shrimp Sauce"
+            },
+            "desc": {
+              "es": "Salsa cremosa de camarones, patacones, arroz con coco y ensalada",
+              "en": "Creamy shrimp sauce, plantain, coconut rice and salad"
+            },
+            "price": "$66K",
+            "id": "fuertes-0-2"
+          },
+          {
+            "name": {
+              "es": "Filete de Robalo al Ajillo",
+              "en": "Sea Bass Fillet al Ajillo"
+            },
+            "desc": {
+              "es": "Salsa cremosa a base de ajo, limón, patacones, arroz con coco y ensalada",
+              "en": "Creamy garlic-lemon sauce, plantain, coconut rice and salad"
+            },
+            "price": "$60K",
+            "id": "fuertes-0-3"
+          },
+          {
+            "name": {
+              "es": "Filete de Robalo a la Plancha",
+              "en": "Grilled Sea Bass Fillet"
+            },
+            "desc": {
+              "es": "Asado en mantequilla de limón, patacones, arroz con coco y ensalada con aguacate",
+              "en": "Grilled in lemon butter, plantain, coconut rice and salad with avocado"
+            },
+            "price": "$62K",
+            "id": "fuertes-0-4"
+          }
+        ]
+      },
+      {
+        "id": "carnes",
+        "title": {
+          "es": "Fuertes",
+          "en": "Main Dishes"
+        },
+        "items": [
+          {
+            "name": {
+              "es": "Lomo Stroganoff",
+              "en": "Beef Stroganoff"
+            },
+            "desc": {
+              "es": "Lomo fino salteado al surtén, salsa cremosa de champiñones, pepinillos, cebolla roja y papas a la francesa",
+              "en": "Pan-seared beef tenderloin, creamy mushroom sauce, pickles, red onion and french fries"
+            },
+            "price": "$48K",
+            "id": "fuertes-1-0"
+          },
+          {
+            "name": {
+              "es": "Lomo Peruano",
+              "en": "Peruvian Lomo Saltado"
+            },
+            "desc": {
+              "es": "Lomo fino en cubos salteado, tomates, especias aromáticas, pimienta rocoto y papas rústicas",
+              "en": "Sautéed diced beef tenderloin, tomatoes, aromatic spices, rocoto pepper and rustic potatoes"
+            },
+            "price": "$45K",
+            "id": "fuertes-1-1"
+          },
+          {
+            "name": {
+              "es": "Baby Beef 300g",
+              "en": "Baby Beef 300g"
+            },
+            "desc": {
+              "es": "Lomo fino a la parrilla, ensalada y papas a la francesa",
+              "en": "Grilled beef tenderloin, salad and french fries"
+            },
+            "price": "$50K",
+            "id": "fuertes-1-2"
+          },
+          {
+            "name": {
+              "es": "Milanesa de Pollo",
+              "en": "Chicken Milanese"
+            },
+            "desc": {
+              "es": "Milanesa de pollo, queso gratinado napolitano y papas a la francesa",
+              "en": "Chicken milanese, gratinated Neapolitan cheese and french fries"
+            },
+            "price": "$42K",
+            "id": "fuertes-1-3"
+          },
+          {
+            "name": {
+              "es": "Pechuga a la Plancha",
+              "en": "Grilled Chicken Breast"
+            },
+            "desc": {
+              "es": "Pechuga asada 250gr, ensalada, chimichurri de la casa y papas a la francesa",
+              "en": "250g grilled chicken breast, salad, house chimichurri and french fries"
+            },
+            "price": "$38K",
+            "id": "fuertes-1-4"
+          }
+        ]
+      },
+      {
+        "id": "sandwiches",
+        "title": {
+          "es": "Sandwiches y Hamburguesas",
+          "en": "Sandwiches and Burgers"
+        },
+        "items": [
+          {
+            "name": {
+              "es": "Hamburguesa Dreamer",
+              "en": "Dreamer Burger"
+            },
+            "desc": {
+              "es": "Carne de res premium 130gr, pan artesanal, tocineta crocante, queso cheddar, cebolla caramelizada, tomate y las especias, salsa de la casa y papas a la francesa",
+              "en": "130g premium beef patty, artisan bun, crispy bacon, cheddar, caramelized onion, tomato and spices, house sauce and french fries"
+            },
+            "price": "$38K",
+            "id": "fuertes-2-0"
+          },
+          {
+            "name": {
+              "es": "Cheese and Bacon Burger",
+              "en": "Cheese and Bacon Burger"
+            },
+            "desc": {
+              "es": "Carne de res premium 130gr, pan artesanal, doble tocineta crocante, queso cheddar, salsa de la casa y papas a la francesa",
+              "en": "130g premium beef patty, artisan bun, double crispy bacon, cheddar, house sauce and french fries"
+            },
+            "price": "$36K",
+            "note": {
+              "es": "Adicionales: vegetales frescos $0 · tocineta $8K · queso cheddar $5K · pepinillos $8K · carne $12K",
+              "en": "Add-ons: fresh veggies $0 · bacon $8K · cheddar $5K · pickles $8K · extra patty $12K"
+            },
+            "id": "fuertes-2-1"
+          },
+          {
+            "name": {
+              "es": "Club Sandwich",
+              "en": "Club Sandwich"
+            },
+            "desc": {
+              "es": "Pollo a la parrilla, queso mozzarella, tocineta, salsa rosada, lechuga, tomate y papas a la francesa",
+              "en": "Grilled chicken, mozzarella, bacon, pink sauce, lettuce, tomato and french fries"
+            },
+            "price": "$38K",
+            "id": "fuertes-2-2"
+          },
+          {
+            "name": {
+              "es": "Sandwich de Pollo Crispy",
+              "en": "Crispy Chicken Sandwich"
+            },
+            "desc": {
+              "es": "Pechuga de pollo empanada, ensalada de col morada, queso cheddar, salsa de la casa y papas a la francesa",
+              "en": "Breaded chicken breast, purple cabbage slaw, cheddar, house sauce and french fries"
+            },
+            "price": "$38K",
+            "id": "fuertes-2-3"
+          }
+        ]
+      },
+      {
+        "id": "arroces",
+        "title": {
+          "es": "Arroces",
+          "en": "Rice Dishes"
+        },
+        "items": [
+          {
+            "name": {
+              "es": "Arroz de Mariscos",
+              "en": "Seafood Rice"
+            },
+            "desc": {
+              "es": "Mix de mariscos (camarón, calamar, mejillones, almejas, pescado), vegetales y aguacate",
+              "en": "Seafood mix (shrimp, calamari, mussels, clams, fish), vegetables and avocado"
+            },
+            "price": "$47K",
+            "id": "fuertes-3-0"
+          },
+          {
+            "name": {
+              "es": "Arroz de Camarón",
+              "en": "Shrimp Rice"
+            },
+            "desc": {
+              "es": "Arroz salteado con camarón y vegetales",
+              "en": "Sautéed rice with shrimp and vegetables"
+            },
+            "price": "$48K",
+            "id": "fuertes-3-1"
+          },
+          {
+            "name": {
+              "es": "Arroz Bambú",
+              "en": "Bamboo Rice (Vegetarian)"
+            },
+            "desc": {
+              "es": "Arroz al wok, cebollín, lechuga, brócoli, aguacate, pimiento rojo y verde y tortilla francesa en cuadros",
+              "en": "Wok-fried rice, scallion, lettuce, broccoli, avocado, red and green pepper and diced French omelet"
+            },
+            "price": "$36K",
+            "tag": "veg",
+            "id": "fuertes-3-2"
+          }
+        ]
+      }
+    ],
+    "pizzas": [
+      {
+        "id": "pizzas-principal",
+        "title": {
+          "es": "Pizzas",
+          "en": "Pizzas"
+        },
+        "items": [
+          {
+            "name": {
+              "es": "La Bacana",
+              "en": "La Bacana"
+            },
+            "desc": {
+              "es": "Masa artesanal, salsa napolitana, queso mozzarella, pepperoni",
+              "en": "Artisan dough, Neapolitan sauce, mozzarella, pepperoni"
+            },
+            "price": "$40K",
+            "id": "pizzas-0-0"
+          },
+          {
+            "name": {
+              "es": "La Mondá",
+              "en": "La Mondá"
+            },
+            "desc": {
+              "es": "Masa artesanal, salsa napolitana, queso mozzarella, camarones al ajillo",
+              "en": "Artisan dough, Neapolitan sauce, mozzarella, garlic shrimp"
+            },
+            "price": "$49K",
+            "id": "pizzas-0-1"
+          },
+          {
+            "name": {
+              "es": "La Mágica",
+              "en": "La Mágica"
+            },
+            "desc": {
+              "es": "Masa artesanal, salsa napolitana, queso mozzarella, champiñones al ajillo",
+              "en": "Artisan dough, Neapolitan sauce, mozzarella, garlic mushrooms"
+            },
+            "price": "$40K",
+            "tag": "veg",
+            "id": "pizzas-0-2"
+          },
+          {
+            "name": {
+              "es": "Ajá Padre",
+              "en": "Ajá Padre"
+            },
+            "desc": {
+              "es": "Masa artesanal, queso mozzarella, salsa napolitana, mini burratas, tomates cherry asados, pesto y orégano",
+              "en": "Artisan dough, mozzarella, Neapolitan sauce, mini burratas, roasted cherry tomatoes, pesto and oregano"
+            },
+            "price": "$49K",
+            "tag": "veg",
+            "id": "pizzas-0-3"
+          },
+          {
+            "name": {
+              "es": "Cule Poco",
+              "en": "Cule Poco"
+            },
+            "desc": {
+              "es": "Masa artesanal, salsa napolitana, queso mozzarella, tomates cherry asados, pesto, pimentones asados, ajo, rúcula, jalapeños, champiñones al ajillo y orégano",
+              "en": "Artisan dough, Neapolitan sauce, mozzarella, roasted cherry tomatoes, pesto, roasted peppers, garlic, arugula, jalapeños, garlic mushrooms and oregano"
+            },
+            "price": "$45K",
+            "tag": "veg",
+            "id": "pizzas-0-4"
+          },
+          {
+            "name": {
+              "es": "La Cachaca",
+              "en": "La Cachaca"
+            },
+            "desc": {
+              "es": "Masa artesanal, salsa napolitana, queso mozzarella, jamón serrano, parmesano, rúcula y balsámico",
+              "en": "Artisan dough, Neapolitan sauce, mozzarella, serrano ham, parmesan, arugula and balsamic"
+            },
+            "price": "$45K",
+            "id": "pizzas-0-5"
+          },
+          {
+            "name": {
+              "es": "La Corroncha",
+              "en": "La Corroncha"
+            },
+            "desc": {
+              "es": "Masa artesanal, salsa napolitana, queso mozzarella, queso azul, parmesano y mini burratas",
+              "en": "Artisan dough, Neapolitan sauce, mozzarella, blue cheese, parmesan and mini burratas"
+            },
+            "price": "$49K",
+            "tag": "veg",
+            "id": "pizzas-0-6"
+          },
+          {
+            "name": {
+              "es": "Llegó el Poder",
+              "en": "Llegó el Poder"
+            },
+            "desc": {
+              "es": "Masa artesanal, queso mozzarella, salami, pepperoni y chorizo español",
+              "en": "Artisan dough, mozzarella, salami, pepperoni and Spanish chorizo"
+            },
+            "price": "$40K",
+            "tag": "spicy",
+            "id": "pizzas-0-7"
+          },
+          {
+            "name": {
+              "es": "Cule Pava",
+              "en": "Cule Pava"
+            },
+            "desc": {
+              "es": "Masa artesanal, salsa napolitana, queso mozzarella y albahaca",
+              "en": "Artisan dough, Neapolitan sauce, mozzarella and basil"
+            },
+            "price": "$35K",
+            "tag": "veg",
+            "id": "pizzas-0-8"
+          },
+          {
+            "name": {
+              "es": "Ahí Jue",
+              "en": "Ahí Jue"
+            },
+            "desc": {
+              "es": "Masa artesanal, salsa napolitana, queso mozzarella, chorizo español, pimentón asado, ajo y jalapeño",
+              "en": "Artisan dough, Neapolitan sauce, mozzarella, Spanish chorizo, roasted pepper, garlic and jalapeño"
+            },
+            "price": "$40K",
+            "tag": "spicy",
+            "id": "pizzas-0-9"
+          }
+        ]
+      }
+    ],
+    "postres": [
+      {
+        "id": "postres-principal",
+        "title": {
+          "es": "Postres",
+          "en": "Desserts"
+        },
+        "items": [
+          {
+            "name": {
+              "es": "Crepe de Nutella",
+              "en": "Nutella Crepe"
+            },
+            "desc": {
+              "es": "Crepe, Nutella, banana, fresa, sirope de chocolate",
+              "en": "Crepe, Nutella, banana, strawberry, chocolate syrup"
+            },
+            "price": "$22K",
+            "id": "postres-0-0"
+          },
+          {
+            "name": {
+              "es": "Copa de Helado Frutas",
+              "en": "Fruit Ice Cream Cup"
+            },
+            "desc": {
+              "es": "Helado de vainilla, piña, sandía, banana, fresa y manzana",
+              "en": "Vanilla ice cream, pineapple, watermelon, banana, strawberry and apple"
+            },
+            "price": "$20K",
+            "id": "postres-0-1"
+          },
+          {
+            "name": {
+              "es": "Brownie con Helado",
+              "en": "Brownie with Ice Cream"
+            },
+            "price": "$22K",
+            "id": "postres-0-2"
+          }
+        ]
+      }
+    ],
+    "bar": [
+      {
+        "id": "de-la-casa",
+        "title": {
+          "es": "De la Casa",
+          "en": "House Specials"
+        },
+        "items": [
+          {
+            "name": {
+              "es": "Tequila Passion",
+              "en": "Tequila Passion"
+            },
+            "desc": {
+              "es": "Tequila, maracuyá, jengibre, licor 43",
+              "en": "Tequila, passionfruit, ginger, licor 43"
+            },
+            "price": "$36K",
+            "id": "bar-0-0"
+          },
+          {
+            "name": {
+              "es": "Sandía Dream",
+              "en": "Watermelon Dream"
+            },
+            "desc": {
+              "es": "Vodka, sandía, naranja, menta",
+              "en": "Vodka, watermelon, orange, mint"
+            },
+            "price": "$36K",
+            "id": "bar-0-1"
+          }
+        ]
+      },
+      {
+        "id": "clasicos",
+        "title": {
+          "es": "Clásicos",
+          "en": "Classics"
+        },
+        "items": [
+          {
+            "name": {
+              "es": "Gin & Tonic",
+              "en": "Gin & Tonic"
+            },
+            "price": "$30K",
+            "id": "bar-1-0"
+          },
+          {
+            "name": {
+              "es": "Aperol Spritz",
+              "en": "Aperol Spritz"
+            },
+            "price": "$35K",
+            "id": "bar-1-1"
+          },
+          {
+            "name": {
+              "es": "Piña Colada",
+              "en": "Piña Colada"
+            },
+            "price": "$30K",
+            "id": "bar-1-2"
+          },
+          {
+            "name": {
+              "es": "Cuba Libre",
+              "en": "Cuba Libre"
+            },
+            "price": "$30K",
+            "id": "bar-1-3"
+          },
+          {
+            "name": {
+              "es": "Coco Loco",
+              "en": "Coco Loco"
+            },
+            "price": "$35K",
+            "id": "bar-1-4"
+          },
+          {
+            "name": {
+              "es": "Margarita",
+              "en": "Margarita"
+            },
+            "price": "$35K",
+            "id": "bar-1-5"
+          },
+          {
+            "name": {
+              "es": "Mojito",
+              "en": "Mojito"
+            },
+            "price": "$30K",
+            "id": "bar-1-6"
+          },
+          {
+            "name": {
+              "es": "Caipirinha",
+              "en": "Caipirinha"
+            },
+            "price": "$30K",
+            "id": "bar-1-7"
+          },
+          {
+            "name": {
+              "es": "Paloma",
+              "en": "Paloma"
+            },
+            "price": "$30K",
+            "id": "bar-1-8"
+          },
+          {
+            "name": {
+              "es": "Tinto de Verano",
+              "en": "Tinto de Verano"
+            },
+            "price": "$30K",
+            "id": "bar-1-9"
+          }
+        ]
+      },
+      {
+        "id": "sin-alcohol",
+        "title": {
+          "es": "Sin Alcohol",
+          "en": "Non-Alcoholic"
+        },
+        "items": [
+          {
+            "name": {
+              "es": "Soda Saborizada",
+              "en": "Flavored Soda"
+            },
+            "desc": {
+              "es": "Flor de jamaica, maracuyá",
+              "en": "Hibiscus, passionfruit"
+            },
+            "price": "$18K",
+            "id": "bar-2-0"
+          },
+          {
+            "name": {
+              "es": "Cocteles",
+              "en": "Mocktails"
+            },
+            "desc": {
+              "es": "Mojito, piña colada",
+              "en": "Mojito, piña colada"
+            },
+            "price": "$20K",
+            "id": "bar-2-1"
+          },
+          {
+            "name": {
+              "es": "Limonada Natural",
+              "en": "Natural Lemonade"
+            },
+            "desc": {
+              "es": "Coco, hierbabuena o cereza",
+              "en": "Coconut, mint or cherry"
+            },
+            "price": "$15K",
+            "id": "bar-2-2"
+          },
+          {
+            "name": {
+              "es": "Gatorade",
+              "en": "Gatorade"
+            },
+            "price": "$12K",
+            "id": "bar-2-3"
+          },
+          {
+            "name": {
+              "es": "Redbull",
+              "en": "Red Bull"
+            },
+            "price": "$18K",
+            "id": "bar-2-4"
+          },
+          {
+            "name": {
+              "es": "Agua",
+              "en": "Water"
+            },
+            "price": "$6K",
+            "id": "bar-2-5"
+          },
+          {
+            "name": {
+              "es": "Coca Cola",
+              "en": "Coca-Cola"
+            },
+            "price": "$6K",
+            "id": "bar-2-6"
+          },
+          {
+            "name": {
+              "es": "Ginger Ale",
+              "en": "Ginger Ale"
+            },
+            "price": "$6K",
+            "id": "bar-2-7"
+          },
+          {
+            "name": {
+              "es": "Soda Bretaña",
+              "en": "Soda Bretaña"
+            },
+            "price": "$8K",
+            "id": "bar-2-8"
+          }
+        ]
+      },
+      {
+        "id": "cervezas",
+        "title": {
+          "es": "Cervezas",
+          "en": "Beer"
+        },
+        "items": [
+          {
+            "name": {
+              "es": "Club Colombia",
+              "en": "Club Colombia"
+            },
+            "price": "$12K",
+            "id": "bar-3-0"
+          },
+          {
+            "name": {
+              "es": "Stella Artois",
+              "en": "Stella Artois"
+            },
+            "price": "$15K",
+            "id": "bar-3-1"
+          },
+          {
+            "name": {
+              "es": "Corona",
+              "en": "Corona"
+            },
+            "price": "$15K",
+            "id": "bar-3-2"
+          },
+          {
+            "name": {
+              "es": "Águila",
+              "en": "Águila"
+            },
+            "price": "$10K",
+            "id": "bar-3-3"
+          }
+        ]
+      },
+      {
+        "id": "vinos",
+        "title": {
+          "es": "Vinos",
+          "en": "Wine"
+        },
+        "items": [
+          {
+            "name": {
+              "es": "Don Simón",
+              "en": "Don Simón"
+            },
+            "desc": {
+              "es": "Tempranillo",
+              "en": "Tempranillo"
+            },
+            "price": "$80K",
+            "id": "bar-4-0"
+          },
+          {
+            "name": {
+              "es": "Baron Rothberg",
+              "en": "Baron Rothberg"
+            },
+            "desc": {
+              "es": "Espumoso",
+              "en": "Sparkling"
+            },
+            "price": "$80K",
+            "id": "bar-4-1"
+          },
+          {
+            "name": {
+              "es": "Quinta las Cabras",
+              "en": "Quinta las Cabras"
+            },
+            "desc": {
+              "es": "Cabernet Sauvignon",
+              "en": "Cabernet Sauvignon"
+            },
+            "price": "$80K",
+            "id": "bar-4-2"
+          }
+        ]
+      },
+      {
+        "id": "licores",
+        "title": {
+          "es": "Licores",
+          "en": "Spirits"
+        },
+        "subtitle": {
+          "es": "Trago / Botella (750ml)",
+          "en": "Shot / Bottle (750ml)"
+        },
+        "items": [
+          {
+            "name": {
+              "es": "Tequila Jose Cuervo",
+              "en": "Tequila Jose Cuervo"
+            },
+            "price": "$23K / $260K",
+            "id": "bar-5-0"
+          },
+          {
+            "name": {
+              "es": "Vodka Absolut",
+              "en": "Vodka Absolut"
+            },
+            "price": "$23K / $260K",
+            "id": "bar-5-1"
+          },
+          {
+            "name": {
+              "es": "Aguardiente Antioqueño",
+              "en": "Aguardiente Antioqueño"
+            },
+            "price": "$18K / $160K",
+            "id": "bar-5-2"
+          },
+          {
+            "name": {
+              "es": "Ron Viejo de Caldas",
+              "en": "Ron Viejo de Caldas"
+            },
+            "price": "$18K / $170K",
+            "id": "bar-5-3"
+          },
+          {
+            "name": {
+              "es": "Old Parr 12 Años",
+              "en": "Old Parr 12 Years"
+            },
+            "price": "$350K",
+            "id": "bar-5-4"
+          },
+          {
+            "name": {
+              "es": "Jack Daniel's",
+              "en": "Jack Daniel's"
+            },
+            "price": "$320K",
+            "id": "bar-5-5"
+          }
+        ]
+      },
+      {
+        "id": "batidos",
+        "title": {
+          "es": "Batidos",
+          "en": "Smoothies"
+        },
+        "subtitle": {
+          "es": "$16K cada uno",
+          "en": "$16K each"
+        },
+        "highlight": true,
+        "items": [
+          {
+            "name": {
+              "es": "Morado Místico",
+              "en": "Mystic Purple"
+            },
+            "desc": {
+              "es": "Arándanos, uvas negras, semillas de chía, limón y hierbabuena",
+              "en": "Blueberries, black grapes, chia seeds, lemon and mint"
+            },
+            "id": "bar-6-0"
+          },
+          {
+            "name": {
+              "es": "Vital Root",
+              "en": "Vital Root"
+            },
+            "desc": {
+              "es": "Espinaca, manzana verde, pepino, jengibre, limón y naranja",
+              "en": "Spinach, green apple, cucumber, ginger, lemon and orange"
+            },
+            "id": "bar-6-1"
+          },
+          {
+            "name": {
+              "es": "Fit & Fresh",
+              "en": "Fit & Fresh"
+            },
+            "desc": {
+              "es": "Naranja, zanahoria, jengibre, cúrcuma y limón",
+              "en": "Orange, carrot, ginger, turmeric and lemon"
+            },
+            "id": "bar-6-2"
+          },
+          {
+            "name": {
+              "es": "Green Vibes",
+              "en": "Green Vibes"
+            },
+            "desc": {
+              "es": "Apio, pepino, piña, manzana verde, perejil y limón",
+              "en": "Celery, cucumber, pineapple, green apple, parsley and lemon"
+            },
+            "id": "bar-6-3"
+          },
+          {
+            "name": {
+              "es": "Frutopia",
+              "en": "Frutopia"
+            },
+            "desc": {
+              "es": "Remolacha, fresa, piña, menta y limón",
+              "en": "Beet, strawberry, pineapple, mint and lemon"
+            },
+            "id": "bar-6-4"
+          }
+        ]
+      }
+    ]
+  },
+  "featuredItemId": null
+}
