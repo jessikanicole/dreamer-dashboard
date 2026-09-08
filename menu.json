@@ -67,7 +67,8 @@
               "en": "Artisan bread, eggs your way, bacon, guacamole, mixed greens, cherry tomato, pickled onion, bocconcini, parmesan, olives and costeño-whey tzatziki"
             },
             "price": "$32K",
-            "id": "desayunos-0-1"
+            "id": "desayunos-0-1",
+            "soldOut": true
           },
           {
             "name": {
